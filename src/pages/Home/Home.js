@@ -11,9 +11,11 @@ import getty3 from "../../asset/img/gettyimages-760239297-2048x2048.jpg";
 import magetty from "../../asset/img/gettyimages-1197742259-2048x2048.jpg";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination } from 'swiper';
 import { Grid } from "@material-ui/core";
 // Import Swiper styles
 import "swiper/swiper.scss";
+import 'swiper/components/pagination/pagination.scss';
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -32,6 +34,7 @@ import forest from "../../asset/img/icon-forest.png";
 import sakura from "../../asset/img/icon-sakura.png";
 import { Link } from "react-router-dom";
 import TemporaryDrawer from "../../components/SideBar/Sidebar-menu";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const lightTheme = createMuiTheme({
   palette: {
@@ -62,25 +65,36 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  marquee: {
-    height: "100%",
-    width: "259px",
-    
-    backgroundColor: "#000000",
+  marquee:{
+    position:"relative",
+    top:'50%',
+    transform: 'translateY(-50%)',
+    left:'5%',
+    color:'white',
   },
-  matitle: {
-    letterSpacing:"0.46px",
-    margin: "0 69px 8px 0",
-    color: "#ffffff",
-    fontSize: "22px",
-    fontWeight: "bold",
+  matitle:{
+    fontFamily: '"NotoSansCJKtc',
+    fontWeight: 'normal',
+    lineHeight: 1.5,
+    letterSpacing: 0.5,
+    textDecoration: 'none',
+    padding:8,
   },
-  matext: {
-    color: "#ffffff",
-    fontSize: "16px",
+  matext:{
+    fontFamily: '"NotoSansCJKtc',
+    fontWeight: 'normal',
+    lineHeight: 1.5,
+    letterSpacing: 0.5,
+    textDecoration: 'none',
+    padding:8,
   },
   mabutton: {
+    fontFamily: '"NotoSansCJKtc',
+    fontWeight: 'normal',
     backgroundColor: "#00d04c",
+    margin:8,
+    borderRadius:'50px',
+    color:'white',
   },
   maimg: {
     height: "230px",
@@ -144,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
     width:"174px",
   },
   tangle: {
-    width: "100%",
+    width: "100%",  
     height: "16px",
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
@@ -170,6 +184,8 @@ const obj = {
   "forest.png": forest,
   "sakura.png": sakura,
 };
+//User SwiperCore 導航dot
+SwiperCore.use([Pagination]);
 export default function HomePage() {
   const classes = useStyles();
   const [collection, setcollection] = useState([]);
@@ -236,25 +252,44 @@ export default function HomePage() {
 
           <Swiper
             className={classes.rectangle}
-            spaceBetween={100} //side 之間距離
-            slidesPerView={2} //容器能够同时显示的slides数量
+            spaceBetween={0} //side 之間距離
+            slidesPerView={1} //容器能够同时显示的slides数量
             mousewheel={true}
-            onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
+            pagination={{ clickable: true }}//show dots
           >
-            <SwiperSlide>
-              <Grid className={classes.marquee}>
-                <Grid className={classes.matitle}>親子步道上線囉</Grid>
-                <br />
-                <Grid className={classes.matext}>帶你的老爸冒險去</Grid>
-                <br />
-                <Button variant="contained" className={classes.mabutton}>
-                  查看步道
-                </Button>
-              </Grid>
+            <SwiperSlide style={{backgroundColor:'#232323'}}>
+              <div className={classes.marquee}>
+              <Typography className={classes.matitle}>親子步道上線囉</Typography>
+              <Typography className={classes.matext}>帶你的老爸冒險去</Typography>
+              <Button 
+                to='/home'
+                variant="contained" 
+                size="small"
+                color="secondary"
+                className={classes.mabutton}
+                endIcon={<ArrowForwardIcon />}
+              >
+                查看步道
+              </Button>
+              </div>
             </SwiperSlide>
-            <SwiperSlide>
-              <img src={magetty} className={classes.maimg} />
+            <SwiperSlide style={{backgroundColor:'#232323',backgroundImage:{magetty}}}>
+              <div className={classes.marquee}>
+              {/* <img src={magetty} className={classes.maimg} /> */}
+              <Typography className={classes.matitle}>挑戰步道上線囉</Typography>
+              <Typography className={classes.matext}>帶你的老媽冒險去</Typography>
+              <Button 
+                to='/home'
+                variant="contained" 
+                size="small"
+                color="secondary"
+                className={classes.mabutton}
+                endIcon={<ArrowForwardIcon />}
+              >
+                查看步道
+              </Button>
+              </div>
             </SwiperSlide>
           </Swiper>
 

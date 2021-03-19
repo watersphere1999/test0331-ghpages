@@ -5,15 +5,18 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import getty from "../../asset/img/gettyimages-1197938495-2048x2048.jpg";
-import getty2 from "../../asset/img/gettyimages-1181433728-2048x2048.jpg";
-import getty3 from "../../asset/img/gettyimages-760239297-2048x2048.jpg";
-import magetty from "../../asset/img/gettyimages-1197742259-2048x2048.jpg";
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid } from "@material-ui/core";
 // Import Swiper styles
 import "swiper/swiper.scss";
+
+import magetty from "../../asset/img/gettyimages-1197742259-2048x2048.jpg";
+import Slider from "react-slick";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -52,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#3c5754",
     color: "#ffffff",
   },
+
   menuButton: {
     marginRight: theme.spacing(3),
   },
@@ -65,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
   marquee: {
     height: "100%",
     width: "259px",
-    
+
     backgroundColor: "#000000",
   },
   matitle: {
-    letterSpacing:"0.46px",
+    letterSpacing: "0.46px",
     margin: "0 69px 8px 0",
     color: "#ffffff",
     fontSize: "22px",
@@ -86,24 +90,21 @@ const useStyles = makeStyles((theme) => ({
     height: "230px",
   },
   swiper: {
-
-    
     backgroundColor: "#fffff",
     height: "112px",
     textAlign: "center",
     margin: "16px 0 0",
-
   },
-  collection:{
+  collection: {
     margin: "0 0 7px",
-    padding:"16px",
-    textAlign:"center", 
+    padding: "16px",
+    textAlign: "center",
   },
-  icontext:{
+  icontext: {
     margin: "7px 9px 0 10px",
-    textAlign:"center",
-    width:"29px",
-    fontWeight:"bold",
+    textAlign: "center",
+    width: "29px",
+    fontWeight: "bold",
   },
 
   iconImg: {
@@ -118,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "22px",
     color: "#232323",
   },
-  
+
   linkstlye: {
     color: "#000",
     textDecoration: "none",
@@ -141,7 +142,6 @@ const useStyles = makeStyles((theme) => ({
   },
   Img: {
     height: "96px",
-    width:"174px",
   },
   tangle: {
     width: "100%",
@@ -157,7 +157,7 @@ const api = axios.create({
 });
 const demoapi = axios.create({
   //測試 api
-  baseURL: "http://09da54f0b81b.ngrok.io",
+  baseURL: "http://762e0ac3e2b9.ngrok.io",
   headers: {
     "X-Secure-Code": "12345678",
   },
@@ -174,7 +174,7 @@ export default function HomePage() {
   const classes = useStyles();
   const [collection, setcollection] = useState([]);
   const [articles, setarticle] = useState([]);
-
+  const [banners, setbanners] = useState([]);
   //搜尋主題api
   const collectionApi = async () => {
     await api.get("/api/collection").then((res) => {
@@ -185,7 +185,9 @@ export default function HomePage() {
   //搜尋首頁行程api
   const articleApi = async () => {
     await demoapi.get("/api/home").then((res) => {
+
       setarticle(res.data.articles);
+      setbanners(res.data.banners);
     });
   };
   const [state, setState] = useState(false);
@@ -195,7 +197,14 @@ export default function HomePage() {
     if (event.type === "keydown") return;
     setState(open);
   };
-
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+  };
   useEffect(() => {
     collectionApi();
     articleApi();
@@ -228,35 +237,35 @@ export default function HomePage() {
                 Go Hiking
               </Typography>
               <Button color="inherit">
-                
                 <SearchIcon />
               </Button>
             </Toolbar>
           </AppBar>
 
-          <Swiper
-            className={classes.rectangle}
-            spaceBetween={100} //side 之間距離
-            slidesPerView={2} //容器能够同时显示的slides数量
-            mousewheel={true}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
-          >
-            <SwiperSlide>
-              <Grid className={classes.marquee}>
-                <Grid className={classes.matitle}>親子步道上線囉</Grid>
-                <br />
-                <Grid className={classes.matext}>帶你的老爸冒險去</Grid>
-                <br />
-                <Button variant="contained" className={classes.mabutton}>
-                  查看步道
-                </Button>
+          <div className="container">
+            <link
+              rel="stylesheet"
+              type="text/css"
+              charset="UTF-8"
+              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+            />
+            <link
+              rel="stylesheet"
+              type="text/css"
+              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+            />
+
+            <Slider {...settings}>
+            {banners.map((banners) => (
+              <Grid  style={{
+                backgroundImage: `url(${banners.img})`
+              }}>
+
               </Grid>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={magetty} className={classes.maimg} />
-            </SwiperSlide>
-          </Swiper>
+              
+            ))}
+            </Slider>
+          </div>
 
           <Grid className={classes.tangle} />
 
@@ -270,7 +279,7 @@ export default function HomePage() {
             loop={false}
           >
             {collection.map((collection) => (
-              <SwiperSlide  className={classes.collection} >
+              <SwiperSlide className={classes.collection}>
                 <Link
                   to={`/searchQuick/${collection.id}`}
                   className={classes.linkstlye}
@@ -290,7 +299,7 @@ export default function HomePage() {
           <Grid className={classes.retitle}>行程推薦</Grid>
           <Swiper
             className={classes.swiper2}
-            spaceBetween={16}
+            spaceBetween={160}
             slidesPerView={10}
             navigation
             pagination={{ clickable: true }}

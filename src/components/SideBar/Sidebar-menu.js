@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid } from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from '@material-ui/core/Divider';
 import usericon from "../../asset/img/hpic3202.jpg";
 import "./sidebar.scoped.scss";
 import Avatar from "@material-ui/core/Avatar";
-import { BsFillPersonFill } from "react-icons/bs";
-import { BsFillLockFill } from "react-icons/bs";
-import { BsFillInfoCircleFill } from "react-icons/bs";
+
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 const useStyles = makeStyles({
   list: {
     width: "353px",
@@ -44,12 +49,13 @@ const useStyles = makeStyles({
     lineHeight: "1.43",
   },
   scrim: {
-    padding: "12px 185px 12px 16px",
+    padding: "10%",
+    
     borderRadius: "4px",
     fontSize: "16px",
     fontWeight: "bold",
     lineHeight: 1.5,
-    height:"48px",
+    height: "48px",
     "&:hover": {
       backgroundColor: "rgba(0, 208, 76, 0.05)",
       color: "#00d04c",
@@ -61,6 +67,11 @@ const useStyles = makeStyles({
     "&:hover": {
       color: "#00d04c",
     },
+  },
+  icon:{
+    color:"black",
+    
+   fontSize:"24px",
   },
   text: {
     margin: "0 0 0 32px",
@@ -77,12 +88,11 @@ const useStyles = makeStyles({
   version: {
     fontSize: "14px",
     fontWeight: "bold",
-    textAlign:"center",
+    textAlign: "center",
     marginLeft: "15%",
     width: "323px",
   },
   versiont: {
-    
     marginLeft: "50%",
     textAlign: "right",
 
@@ -109,9 +119,9 @@ export default function Sidebar(props) {
   const [user, setuser] = useState([]);
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
-  const id ="2";
+  const id = "2";
   const userApi = async (id) => {
-    await demoapi.get("/api/user/"+id).then((res) => {
+    await demoapi.get("/api/user/" + id).then((res) => {
       setuser(res.data);
     });
   };
@@ -128,41 +138,39 @@ export default function Sidebar(props) {
       <div className={classes.list} role="presentation">
         <Avatar className={classes.avater} src={user.image} />
         <Grid className={classes.name}>{user.name}</Grid>
-    
+
         <Grid className={classes.mail}>{user.email}</Grid>
-        <Grid className={classes.tangle} />
-
-        <Grid >
-          <Button size="large" className={classes.scrim}>
-            
-            <BsFillPersonFill  />
-  
-            <span className={classes.text}>個人檔案</span>
-          </Button>
-
-          <br />
-          <Link to="/privacyPolicy" className={classes.link}>
-            <Button size="large" className={classes.scrim}>
-              <BsFillLockFill />
-
-              <span className={classes.text}>隱私權政策</span>
-            </Button>
-          </Link>
-          <br />
-          <Link to="/aboutUs" className={classes.link}>
-            <Button size="large" className={classes.scrim}>
-              <BsFillInfoCircleFill />
-              <span className={classes.text}>關於我們</span>
-            </Button>
-          </Link>
-        </Grid>
-
-        <Grid className={classes.tangle} />
-        <Grid className={classes.sion}>
-          <span className={classes.version}>版本</span>
-          <span className={classes.versiont}>1.0.1</span>
-        </Grid>
-        <Grid className={classes.tangle} />
+        <Divider />
+        <List component="nav" aria-label="main mailbox folders" >
+          <ListItem button className={classes.scrim}>
+            <ListItemIcon  >
+            <PermIdentityOutlinedIcon className={classes.icon}/>
+            </ListItemIcon>
+            <ListItemText primary="個人檔案" />
+          </ListItem>
+          <ListItem button className={classes.scrim}>
+            <ListItemIcon >
+          < LockOutlinedIcon className={classes.icon}/>
+            </ListItemIcon >
+            <ListItemText primary="隱私權政策" />
+          </ListItem>
+          <ListItem button className={classes.scrim}>
+            <ListItemIcon className={classes.icon}>
+            <InfoOutlinedIcon className={classes.icon}/> 
+            </ListItemIcon>
+            <ListItemText primary="關於我們" />
+          </ListItem>
+        </List>
+        
+        <Divider />
+        
+        <List component="nav" aria-label="secondary mailbox folders">
+        <ListItem button>
+          <ListItemText primary="版本" />
+          <ListItemText primary="1.0.1" />
+        </ListItem>
+        </List>
+       <Divider />
         <Grid className={classes.log}>登出</Grid>
       </div>
     </>

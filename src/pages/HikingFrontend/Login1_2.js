@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#232323',
   },
   ErrorInfo:{
-    width: '58px',
+    width: '100%',
     height: '21px',
     margin: '16px 263px 56px 0',
     fontFamily: "NotoSansCJKtc",
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, errors } = useForm()
   const axios = require('axios');
   let responsedJSON;
   let back = useHistory();
@@ -160,7 +160,7 @@ export default function SignIn() {
         </Typography>   
           <Input
             onChange={event => setEmail(event.target.value)}
-            inputRef={register}
+            inputRef={register({ required: true, minLength: 8 })}
             className={classes.InputBackground}
             onChange = {event => handleChange(event)}
             id="email"
@@ -168,7 +168,7 @@ export default function SignIn() {
             name="email"
           />
         <Typography className={classes.ErrorInfo} >
-          錯誤資訊
+          {errors.email && "請輸入電子信箱"}
         </Typography>  
         <ReCAPTCHA
             sitekey="6LdFiEYaAAAAAHcdu_AyzIktEbqdTz7pXmNBC__W"

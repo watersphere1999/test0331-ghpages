@@ -6,21 +6,27 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import { makeStyles } from "@material-ui/core/styles";
 import BackArrow from "../../components/TopBar/BackArrow";
 import TrailList from "../../components/Lists/TrailList";
-import TemporaryDrawer from "../../components/SideBar/Sidebar"
+import TemporaryDrawer from "../../components/SideBar/Sidebar";
 import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
   headers: {
-    "X-Secure-Code": "12345678",
-  },
+    "X-Secure-Code": "12345678"
+  }
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    margin: "16px",
+    margin: "16px"
   },
+  text: {
+    fontSize: 16,
+    fontWeight: 500,
+    marginTop: 12,
+    marginBottom: 12
+  }
 }));
 
 function SearchResult(props) {
@@ -44,14 +50,14 @@ function SearchResult(props) {
     };
   }, [kw]);
   //搜尋function
-  const searchApi = async (kw) => {
-    await api.get("/api/trail?filters=title:" + kw).then((res) => {
+  const searchApi = async kw => {
+    await api.get("/api/trail?filters=title:" + kw).then(res => {
       setSearchResult(res.data);
     });
   };
   //搜尋function2
-  const searchApiSlideBar = async (url) => {
-    await api.get(url).then((res) => {
+  const searchApiSlideBar = async url => {
+    await api.get(url).then(res => {
       setSearchResult(res.data);
     });
   };
@@ -86,7 +92,7 @@ function SearchResult(props) {
           </Grid>
           <Grid item xs={1}>
             {/* 名彥大哥的超猛篩選器 */}
-            <TemporaryDrawer kw={kw} searchApi={searchApiSlideBar}></TemporaryDrawer>
+            <TemporaryDrawer kw={kw} searchApi={searchApiSlideBar} />
           </Grid>
         </Grid>
 
@@ -95,7 +101,7 @@ function SearchResult(props) {
         </Grid>
         <Grid item xs={12} container direction="row">
           {/* 步道list component */}
-          <TrailList data={searchResult}></TrailList>
+          <TrailList data={searchResult} />
         </Grid>
       </Grid>
     </div>

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 
 const api = axios.create({
-  baseURL: "http://4b4619ff6741.ngrok.io"
+  baseURL: "http://e372773410ac.ngrok.io"
 });
 
 const PersonalPageLogic = (info = null) => {
@@ -21,7 +21,8 @@ const PersonalPageLogic = (info = null) => {
     console.log("getting");
     await api.get("/api/user/" + id).then(res => {
       setisLoading(false);
-      res.data.gender = res.data.gender ? "男" : "女";
+      res.data.users.gender = res.data.users.gender ? "男" : "女";
+      console.log(res.data.users.name)
       setpersonalInfo(res.data);
     });
   };
@@ -78,7 +79,6 @@ const PersonalPageLogic = (info = null) => {
 
   const updateInfo = async (id, data) => {
     setisLoading(true);
-    console.log(data);
     if (data.croppedImage) {
       let blob = await fetch(data.croppedImage).then(r => r.blob());
       const file = new File([blob], "1234567890.jpg", {
@@ -86,20 +86,7 @@ const PersonalPageLogic = (info = null) => {
         type: "image/jpeg"
       });
       const b64 = await getBase64(file);
-      console.log(b64);
       data.croppedImage = b64;
-      // console.log(file);
-      // var fd = new FormData();
-      // fd.append("image", file);
-      // axios
-      //   .post("https://api.imgur.com/3/image", fd, {
-      //     headers: {
-      //       Authorization: "Client-ID 6bdc55894336124"
-      //     }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   });
     }
     return api
       .put("/api/user/" + id, {
@@ -107,12 +94,10 @@ const PersonalPageLogic = (info = null) => {
         gender: data.gender,
         phone_number: data.phone_number,
         birth: data.birth,
-        // profile_photo_url: data.croppedImage ? data.croppedImage : data.image,
-        image: "https://i.imgur.com/X7whEnq.jpg",
+        image: data.croppedImage ? data.croppedImage : data.image,
         county: data.county
       })
       .then(res => {
-        console.log(res);
         return res.status;
       });
   };

@@ -7,7 +7,7 @@ import {
 import { Grid } from "@material-ui/core";
 
 import axios from "axios";
-import TrailList from "../../components/Lists/TrailList";
+import TrailList from "../../components/Lists/TrailCard";
 import BackArrow from "../../components/TopBar/BackArrow";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@material-ui/icons/Favorite";

@@ -1,13 +1,12 @@
-import { Grid } from "@material-ui/core";
+import { Grid, GridList } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import "../App.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { makeStyles } from "@material-ui/core/styles";
 import BackArrow from "../../components/TopBar/BackArrow";
-import TrailList from "../../components/Lists/TrailList";
 import TemporaryDrawer from "../../components/SideBar/Sidebar";
 import axios from "axios";
+import TrailCard from "../../components/Lists/TrailCard";
 
 const api = axios.create({
   baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
@@ -44,7 +43,7 @@ function SearchResult(props) {
   //頁面一載入就發送api請求
   useEffect(() => {
     searchApi(kw);
-    //載入完就清空kw，使重新載入頁面時會再發送一次apia請求
+    //載入完就清空kw，使重新載入頁面時會再發送一次api請求
     return () => {
       kw = "";
     };
@@ -101,7 +100,11 @@ function SearchResult(props) {
         </Grid>
         <Grid item xs={12} container direction="row">
           {/* 步道list component */}
-          <TrailList data={searchResult} />
+          <GridList cellHeight={72} cols={1}>
+            {searchResult.map(trail => (
+              <TrailCard data={trail} />
+            ))}
+          </GridList>
         </Grid>
       </Grid>
     </div>

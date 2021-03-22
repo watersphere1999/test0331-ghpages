@@ -75,6 +75,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     width: "100%"
   },
+  textfield_country_code: {
+    marginTop: 8,
+    marginBottom: 8
+  },
   textLabel: {
     paddingLeft: 15
   },
@@ -111,6 +115,16 @@ const useStyles = makeStyles(theme => ({
     color: "#fff"
   }
 }));
+const DisabledTextField = withStyles({
+  root: {
+    "& .MuiInputBase-root.Mui-disabled": {
+      color: "rgba(0, 0, 0, 1)"
+    },
+    "& .MuiInput-underline.Mui-disabled:before": {
+      borderBottom: "solid 1px rgba(0, 0, 0, 0.12)"
+    }
+  }
+})(TextField);
 
 function PersonalPage(props) {
   const history = useHistory();
@@ -182,24 +196,15 @@ function PersonalPage(props) {
           <Grid item xs={12}>
             <div className={classes.avatarContainer}>
               <Avatar
-                // alt="Profile Picture"
                 src={
-                  croppedImage == null ? Logix.personalInfo.image : croppedImage
+                  croppedImage == null
+                    ? Logix.personalInfo.users
+                      ? Logix.personalInfo.users.image
+                      : ""
+                    : croppedImage
                 }
                 className={classes.avatar}
               />
-              {/* {isReadonly ? (
-                <></>
-              ) : (
-                <div
-                  class={classes.avatarOverlay}
-                  onClick={() => {
-                    openDialog();
-                  }}
-                >
-                  更換
-                </div>
-              )} */}
             </div>
           </Grid>
           <Grid
@@ -215,15 +220,15 @@ function PersonalPage(props) {
               <>
                 <Grid item xs={12}>
                   <Typography variant="h6" style={{ color: "#232323" }}>
-                    {Logix.personalInfo.name
-                      ? Logix.personalInfo.name
+                    {Logix.personalInfo.users
+                      ? Logix.personalInfo.users.name
                       : "loading"}
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h7" style={{ color: "#919191" }}>
-                    {Logix.personalInfo.email
-                      ? Logix.personalInfo.email
+                    {Logix.personalInfo.users
+                      ? Logix.personalInfo.users.email
                       : "loading"}
                   </Typography>
                 </Grid>
@@ -271,13 +276,22 @@ function PersonalPage(props) {
               </Typography>
             </Grid>
             <Grid item xs={9}>
-              <TextField
+              <DisabledTextField
+                disabled={true}
                 id="standard-basic"
                 placeholder="姓名"
                 className={classes.textfield}
                 inputProps={{
-                  value: Logix.personalInfo.name,
-                  readOnly: true
+                  value:
+                    Logix.personalInfo.users === undefined
+                      ? ""
+                      : Logix.personalInfo.users.name,
+                  underline: {
+                    color: "red",
+                    "&::before": {
+                      borderBottom: "2px solid red"
+                    }
+                  }
                 }}
               />
             </Grid>
@@ -287,12 +301,16 @@ function PersonalPage(props) {
               </Typography>
             </Grid>
             <Grid item xs={9}>
-              <TextField
+              <DisabledTextField
+                disabled={true}
                 id="standard-basic"
                 placeholder="性別"
                 className={classes.textfield}
                 inputProps={{
-                  value: Logix.personalInfo.gender,
+                  value:
+                    Logix.personalInfo.users === undefined
+                      ? ""
+                      : Logix.personalInfo.users.gender,
                   readOnly: true
                 }}
               />
@@ -304,32 +322,33 @@ function PersonalPage(props) {
             </Grid>
             <Grid item xs={9}>
               <div className={classes.textfield}>
-                <Select
+                <DisabledTextField
+                  disabled={true}
+                  placeholder="國碼"
                   labelId="country-code"
                   id="country-code"
                   style={{ width: "30%" }}
-                  className={classes.textfield}
+                  className={classes.textfield_country_code}
                   inputProps={{
-                    readOnly: true
+                    value:
+                      Logix.personalInfo.users === undefined
+                        ? ""
+                        : Logix.personalInfo.countrycodes[
+                            Logix.personalInfo.users.country_code_id - 1
+                          ].phone_code
                   }}
-                >
-                  {countryInfo.map(info => (
-                    <MenuItem
-                      key={info.countryCode + info.countryName}
-                      value={info.phoneCode}
-                    >
-                      {info.phoneCode}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <TextField
+                />
+                <DisabledTextField
+                  disabled={true}
                   id="standard-basic"
                   placeholder="手機"
                   style={{ width: "70%" }}
                   className={classes.textfield_phone}
                   inputProps={{
-                    value: Logix.personalInfo.phone_number,
-                    readOnly: true
+                    value:
+                      Logix.personalInfo.users === undefined
+                        ? ""
+                        : Logix.personalInfo.users.phone_number
                   }}
                 />
               </div>
@@ -340,7 +359,8 @@ function PersonalPage(props) {
               </Typography>
             </Grid>
             <Grid item xs={9}>
-              <TextField
+              <DisabledTextField
+                disabled={true}
                 id="standard-basic"
                 placeholder="生日"
                 className={classes.textfield}
@@ -349,8 +369,10 @@ function PersonalPage(props) {
                   shrink: true
                 }}
                 inputProps={{
-                  value: Logix.personalInfo.birth,
-                  readOnly: true
+                  value:
+                    Logix.personalInfo.users === undefined
+                      ? ""
+                      : Logix.personalInfo.users.birth
                 }}
               />
             </Grid>
@@ -360,15 +382,16 @@ function PersonalPage(props) {
               </Typography>
             </Grid>
             <Grid item xs={9}>
-              <TextField
+              <DisabledTextField
+                disabled={true}
                 id="standard-basic"
                 placeholder="居住地"
                 className={classes.textfield}
                 inputProps={{
-                  value: Logix.personalInfo.county
-                    ? Logix.personalInfo.county.name
-                    : "",
-                  readOnly: true
+                  value:
+                    Logix.personalInfo.users === undefined
+                      ? ""
+                      : Logix.personalInfo.users.county.name
                 }}
               />
             </Grid>

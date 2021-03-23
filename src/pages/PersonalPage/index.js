@@ -154,9 +154,9 @@ function PersonalPage(props) {
         <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
-            aria-label="menu"
+            aria-label="back"
+            onClick={() => history.goBack()}
           >
             <ArrowBackIcon />
           </IconButton>

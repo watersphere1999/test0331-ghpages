@@ -106,7 +106,12 @@ const useStyles = makeStyles(theme => ({
 
 function EditAccount(props) {
   const history = useHistory();
-  const pData = props.location.state.pData;
+  if (props.location.state === undefined) {
+    history.push({
+      pathname: "/personalPage"
+    });
+  }
+  const pData = props.location.state ? props.location.state.pData : {};
   const {
     personalInfo,
     handleNameChange,
@@ -152,9 +157,9 @@ function EditAccount(props) {
         <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
-            aria-label="menu"
+            aria-label="back"
+            onClick={() => history.goBack()}
           >
             <ArrowBackIcon />
           </IconButton>
@@ -171,7 +176,6 @@ function EditAccount(props) {
                 !validations.genderValidation &&
                 !validations.phoneValidation
               ) {
-                console.log("yay");
                 collectData();
               }
             }}

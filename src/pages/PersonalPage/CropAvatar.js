@@ -8,6 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import getCroppedImg from "./cropImage";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 const CropAvatar = props => {
+  const history = useHistory();
   const selectedImage = props.location.state.image;
   const pData = props.location.state.pData;
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -65,9 +67,9 @@ const CropAvatar = props => {
         <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
-            aria-label="menu"
+            aria-label="back"
+            onClick={() => history.goBack()}
           >
             <ArrowBackIcon />
           </IconButton>

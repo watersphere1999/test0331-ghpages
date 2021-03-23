@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
-import { Typography } from "@material-ui/core";
+import { Toolbar, Typography,IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, CardActionArea } from "@material-ui/core";
 import axios from "axios";
@@ -12,6 +12,8 @@ import chellenge from "../../asset/img/icon-chellenge.png";
 import hotSpring from "../../asset/img/icon-hot-spring.png";
 import forest from "../../asset/img/icon-forest.png";
 import sakura from "../../asset/img/icon-sakura.png";
+
+import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,20 +27,27 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   collectionContent: {
-    marginTop: 51,
+    marginTop: 61,
     position: "relative",
     padding: 8,
     height: 120,
     overflow: "hidden",
   },
   title: {
-    color:'black',
+    color: "black",
     fontSize: 16,
-    fontWeight:'bold',
+    fontWeight: "bold",
     padding: 8,
     lineHeight: 1.5,
     letterSpacing: 0.5,
-    marginTop:"-1px",
+    marginTop: "-1px",
+  },
+  descText: {
+    color: "black",
+    padding: 8,
+    lineHeight: 1.5,
+    letterSpacing: 0.5,
+    fontSize: 14,
   },
 
   list: {
@@ -77,6 +86,7 @@ const obj = {
 function SearchQuick(props) {
   const classes = useStyles();
   const id = props.match.params.id;
+  const history = useHistory();
   //搜尋結果hook
   const [searchQuick, setSearchQuick] = useState([]);
 
@@ -93,21 +103,41 @@ function SearchQuick(props) {
     <>
       <div className={classes.root}>
         <AppBar className={classes.mask} position="static">
-          <Link to="/searchPage" className={classes.backArrow}>
-            <BackArrow />
-          </Link>
+          <Toolbar
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              
+            }}
+          >
+            <IconButton
+              edge="start"
+              className={classes.backArrow}
+              aria-label="back to previous page"
+              onClick={() => {
+                history.goBack();
+              }}
+          
+            >
+              <BackArrow />
+            </IconButton>
+          </Toolbar>
+       
           <div className={classes.collectionContent}>
-          <div className={classes.title}>
+            <Typography className={classes.title}>
               {searchQuick.name}步道
-            </div>
-            <span>老少咸宜，生活好去處。</span>
+            </Typography>
+            <Typography className={classes.descText}>
+              老少咸宜，生活好去處。
+            </Typography>
             <img
               src={obj[searchQuick.iconImage]}
               className={classes.iconImg}
-              alt={searchQuick.iconImg}
+              
             />
           </div>
-          
         </AppBar>
 
         <Grid className={classes.list}>

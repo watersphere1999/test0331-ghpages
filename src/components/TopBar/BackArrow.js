@@ -5,8 +5,8 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 // const useStyles = makeStyles((theme) => ({
 // }));
 
-function BackArrow() {
-  // const classes = useStyles();
+function BackArrow(props) {
+  
   return (
     <ArrowBackIcon />
   );

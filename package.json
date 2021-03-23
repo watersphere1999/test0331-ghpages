@@ -8,6 +8,7 @@
     "@formatjs/intl-relativetimeformat": "7.x",
     "@material-ui/core": "4.x",
     "@material-ui/icons": "4.x",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.3.10",
     "@types/schema-utils": "^2.4.0",
     "antd": "^4.14.0",

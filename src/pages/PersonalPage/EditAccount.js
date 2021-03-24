@@ -1,19 +1,12 @@
-import React, { Fragment, useState, useEffect } from "react";
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-  withStyles
-} from "@material-ui/core/styles";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   Backdrop,
   Button,
-  Dialog,
+  CircularProgress,
   Divider,
   Grid,
-  InputLabel,
-  MenuItem,
   NativeSelect
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -21,11 +14,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import AvatarUploadDialog from "components/Dialog/AvatarUploadDialog";
 import AvatarUploadDialogLogic from "components/Dialog/AvatarUploadDialogLogic";
-import Select from "@material-ui/core/Select";
 import { countryInfo } from "../../data/countryInfo";
 import PersonalPageLogic from "./personalPageLogic";
 import { useHistory } from "react-router";
@@ -123,6 +114,7 @@ function EditAccount(props) {
     isLoading,
     validations
   } = PersonalPageLogic(pData);
+  console.log(personalInfo);
   const croppedImage =
     props.location.state === undefined
       ? null
@@ -136,13 +128,14 @@ function EditAccount(props) {
   } = AvatarUploadDialogLogic();
   const collectData = async () => {
     const data = {
-      name: personalInfo.name,
-      gender: personalInfo.gender === "男" ? 1 : 0,
-      phone_number: personalInfo.phone_number,
-      birth: personalInfo.birth,
+      name: personalInfo.users.name,
+      gender: personalInfo.users.gender === "男" ? 1 : 0,
+      phone_number: personalInfo.users.phone_number,
+      birth: personalInfo.users.birth,
       croppedImage: croppedImage,
-      image: personalInfo.profile_photo_url,
-      county: personalInfo.county.name
+      image: personalInfo.users.profile_photo_url,
+      county: personalInfo.users.county.name,
+      countryCode: document.getElementById("country-code").value
     };
     const apiResult = await updateInfo(1, data);
     if (apiResult == 200)
@@ -204,7 +197,13 @@ function EditAccount(props) {
             <div className={classes.avatarContainer}>
               <Avatar
                 // alt="Profile Picture"
-                src={croppedImage ? croppedImage : personalInfo.image}
+                src={
+                  croppedImage
+                    ? croppedImage
+                    : personalInfo.users
+                    ? personalInfo.users.image
+                    : ""
+                }
                 className={classes.avatar}
               />
               <div
@@ -229,7 +228,7 @@ function EditAccount(props) {
             <>
               <Grid item xs={12}>
                 <Typography variant="h7" style={{ color: "#919191" }}>
-                  {personalInfo.email ? personalInfo.email : "loading"}
+                  {personalInfo.users ? personalInfo.users.email : "loading"}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -275,7 +274,7 @@ function EditAccount(props) {
                 className={classes.textfield}
                 onChange={handleNameChange}
                 inputProps={{
-                  value: personalInfo.name
+                  value: personalInfo.users ? personalInfo.users.name : ""
                 }}
               />
             </Grid>
@@ -297,7 +296,7 @@ function EditAccount(props) {
                 onChange={handleSexChange}
                 className={classes.textfield}
                 inputProps={{
-                  value: personalInfo.gender
+                  value: personalInfo.users ? personalInfo.users.gender : ""
                 }}
               />
             </Grid>
@@ -313,14 +312,27 @@ function EditAccount(props) {
                   id="country-code"
                   style={{ width: "30%" }}
                   className={classes.textfield}
-                  inputProps={{}}
                 >
-                  {countryInfo.map(info => (
+                  <option
+                    key={"default"}
+                    value={
+                      personalInfo.countrycodes[
+                        personalInfo.users.country_code_id - 1
+                      ].id
+                    }
+                  >
+                    {
+                      personalInfo.countrycodes[
+                        personalInfo.users.country_code_id - 1
+                      ].phone_code
+                    }
+                  </option>
+                  {personalInfo.countrycodes.map(info => (
                     <option
-                      key={info.countryCode + info.countryName}
-                      value={info.phoneCode}
+                      key={info.country_code + info.country_name}
+                      value={info.id}
                     >
-                      {info.phoneCode}
+                      {info.phone_code}
                     </option>
                   ))}
                 </NativeSelect>
@@ -337,7 +349,9 @@ function EditAccount(props) {
                   className={classes.textfield_phone}
                   onChange={handleTelChange}
                   inputProps={{
-                    value: personalInfo.phone_number
+                    value: personalInfo.users
+                      ? personalInfo.users.phone_number
+                      : ""
                   }}
                 />
               </div>
@@ -358,7 +372,7 @@ function EditAccount(props) {
                   shrink: true
                 }}
                 inputProps={{
-                  value: personalInfo.birth
+                  value: personalInfo.users ? personalInfo.users.birth : ""
                 }}
               />
             </Grid>
@@ -374,7 +388,11 @@ function EditAccount(props) {
                 onChange={handleCountyChange}
                 className={classes.textfield}
                 inputProps={{
-                  value: personalInfo.county ? personalInfo.county.name : ""
+                  value: personalInfo.users
+                    ? personalInfo.users.county
+                      ? personalInfo.users.county.name
+                      : ""
+                    : ""
                 }}
               />
             </Grid>
@@ -389,7 +407,7 @@ function EditAccount(props) {
         pData={personalInfo}
       />
       <Backdrop className={classes.backdrop} open={isLoading}>
-        <ClipLoader color={"#36CAAD"} loading={isLoading} size={150} />
+        <CircularProgress />
       </Backdrop>
     </div>
   );

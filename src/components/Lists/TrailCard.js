@@ -59,10 +59,15 @@ const TrailCard = props => {
   const data = props.data;
   const [checked, setChecked] = useState(data.favorite);
   const handleChange = id => {
+    const uid = localStorage.getItem("userid")
+      ? localStorage.getItem("userid")
+      : 1;
     setChecked(!checked);
-    demoapi.post("/api/favorite/?user_id=1&trail_id=" + id).then(res => {
-      console.log(res.status);
-    });
+    demoapi
+      .post("/api/favorite/?user_id=" + uid + "&trail_id=" + id)
+      .then(res => {
+        console.log(res.status);
+      });
   };
   return (
     <div className={classes.root}>
@@ -109,7 +114,9 @@ const TrailCard = props => {
               <div style={{ marginTop: 2 }}>{data.title}</div>
             </Grid>
             <Grid item xs={12} className={classes.location}>
-              <div style={{ marginTop: 2 }}>{data.location.name}</div>
+              <div style={{ marginTop: 2 }}>
+                {data.location ? data.location.county.name : ""}{data.location ? data.location.name : ""}
+              </div>
             </Grid>
             <Grid item xs={12} className={classes.distance}>
               <div style={{ marginTop: 2 }}>全程約{data.distance}公里</div>

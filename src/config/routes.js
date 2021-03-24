@@ -3,6 +3,9 @@ import React, { lazy } from 'react'
 import AuthorizedRoute from 'base-shell/lib/components/AuthorizedRoute/AuthorizedRoute'
 import UnauthorizedRoute from 'base-shell/lib/components/UnauthorizedRoute/UnauthorizedRoute'
 import { Route } from 'react-router-dom'
+import PersonalPage from 'pages/PersonalPage'
+import EditAccount from 'pages/PersonalPage/EditAccount'
+import CropAvatar from 'pages/PersonalPage/CropAvatar'
 
 
 // const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
@@ -58,6 +61,9 @@ const routes = [
   <Route path="/searchPage" exact component={SearchPage} />,
   <Route path="/searchQuick/:id" exact component={SearchQuick} />,
   <Route path="/searchResult" exact component={SearchResult} />,
+  <Route path="/personalPage" exact component={PersonalPage} />,
+  <Route path="/editAccount" exact component={EditAccount} />,
+  <Route path="/cropAvatar" exact component={CropAvatar} />,
   <Route path="/privacyPolicy" exact component={PrivacyPolicy} />,
   <Route path="/aboutUs" exact component={AboutUs} />,
   <Route path="/Home" exact component={Home} />,

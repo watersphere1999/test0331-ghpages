@@ -1,21 +1,16 @@
 import React from "react";
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import AndroidIcon from '@material-ui/icons/Android';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import AppleIcon from '@material-ui/icons/Apple';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import Page from 'material-ui-shell/lib/containers/Page';
 import { Link as RouterLink} from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { MemoryRouter as Router } from 'react-router';
 import bg from '../../asset/img/sample.jpg';
 import GoogleLogin from "react-google-login";
 import FacebookLogin from 'react-facebook-login';
+import AppleLogin from 'react-apple-login';
 import axios from "axios";
 import googleIcon from '.../../asset/img/google-icon.svg'
 
@@ -26,6 +21,7 @@ import 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
+const { useState, useRef, useLayoutEffect } = React; //#####
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -160,16 +156,6 @@ const testTheme = createMuiTheme({
   }
 });
 
-// var windowObjectReference;
-
-// async function openGooglePopup(){
-//   windowObjectReference = await window.open('https://gohiking-server.herokuapp.com/auth/google/', '_blank', 'width= 350, height = 450', 'resizable = 0');
-//   // console.log(windowObjectReference)
-// }
-
-
-
-
 export default function ImgMediaCard() {
   const classes = useStyles();
   let history = useHistory();
@@ -188,19 +174,19 @@ export default function ImgMediaCard() {
     }
     console.log('data: ' + data);
     await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data).then(function(response2){
-      console.log('second response: '+ JSON.stringify(response2));
-      console.log('second response token: '+ response2.data.token);
+      console.log('====second response==== ',response2);
+      console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
-      // history.push('/home');
+      history.push('/home');
     })
     .catch(function (error) {
-      console.log('error: '+ error);
+      console.log('====error==== ', error);
       
     })
   };
 // Facebook 第三方登入
   const responseFacebook = async(response) => {
-    console.log('response: ' + JSON.stringify(response))
+    console.log('====response===== ',response)
     var data = {
       'email': response.email,
       'name': response.name,
@@ -208,15 +194,15 @@ export default function ImgMediaCard() {
       'avatar': response.picture.data.url,
       'token': response.accessToken,
     }
-    console.log('data' + JSON.stringify(data));
+    console.log('====data====',data);
     await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data).then(function(response2){
-      console.log('second response: '+ JSON.stringify(response2));
-      console.log('second response token: '+ response2.data.token);
+      console.log('====second response==== ', response2);
+      console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
-      // history.push('/home');
+      history.push('/home');
     })
     .catch(function (error){
-      console.log('error: '+ error);
+      console.log('====error==== ',error);
     })
   }
 
@@ -231,25 +217,42 @@ export default function ImgMediaCard() {
   }
 
 // Apple第三方登入
-  const signInWithApple = async() =>{
+
+  const [appleData, setAppleData] = useState({}); // #####
+
+  const signInWithApple = () =>{
+      var data_apple ={}; // #####
       const provider = new firebase.auth.OAuthProvider('apple.com');
       provider.addScope('email')
       provider.addScope('name')
-      var data ={};
+      
       firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
           /** @type {firebase.auth.OAuthCredential} */
-          console.log('result: '+ JSON.stringify(result));
-          data = {
+          console.log('====result==== ',result);
+          //準備data的name
+          var s = result.user.providerData[0].email;
+          var name ='';
+          var counter = false;
+          s.split("").forEach(character => {
+            if(character == '@' || counter == true){
+              counter = true;
+            }else{
+              name = name + character;
+            }
+            })
+          // 準備data
+          data_apple = {
             'email':result.user.providerData[0].email,
-            'name': result.user.providerData[0].displayName,
-            'apple_id': '我是假資料',
+            'name': name,
+            'apple_id': result.user.providerData[0].uid,
             'avatar': 'https://imgur.com/gallery/TX5W1uj',
-            'token': result.user.providerData[0].uid,
+            'token': result.credential.idToken,
           }
-          console.log('fucking data:' + JSON.stringify(data));
+          console.log('data_apple:',data_apple);
+          setAppleData(data_apple);
         })
         .catch((error) => {
           // Handle Errors here.
@@ -260,18 +263,30 @@ export default function ImgMediaCard() {
           // The firebase.auth.AuthCredential type that was used.
           var credential = error.credential;
         });
-        var headers = {"Access-Control-Allow-Origin": "https://gohiking-server.herokuapp.com:443"}
-        await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', data, headers).then(function(response3){
-          console.log('second response: '+ JSON.stringify(response3));
-          console.log('second response token: '+ response3.data.token);
-          localStorage.setItem('token', response3.data.token);
-          // history.push('/home');
-        })
-        .catch(function (error){
-          console.log('error: '+ error);
-        })  
+        // var headers = {"Access-Control-Allow-Origin": "https://gohiking-server.herokuapp.com:443"} //#####
     }
 
+    const signInWithAppleChangePage = async() =>{ //#####
+      console.log('========final data_apple===========', appleData);
+      await axios.post('https://gohiking-server.herokuapp.com/api/auth/social/callback', appleData).then(function(response3){
+          console.log("====post success====",response3);
+          console.log('====second response token====', response3.data.token);
+          localStorage.setItem('token', response3.data.token);
+          history.push('/home');
+        })
+        .catch(function (error){
+          console.log('error: ', error);
+        })
+    }
+
+    const firstUpdate = useRef(true); //#####
+    useLayoutEffect(() => {
+      if (firstUpdate.current) {
+        firstUpdate.current = false;
+        return;
+      }
+      signInWithAppleChangePage();
+    },[appleData]);
 
   return (   
          
@@ -307,11 +322,7 @@ export default function ImgMediaCard() {
             cssClass = {classes.newFacebook}
             textButton= "透過FACEBOOK登入"
             icon = {<FacebookIcon style={{color: "#ffffff", marginRight: "5px",fontSize : "24px", paddingBottom: "4px"}}/>}
-            />
-          {/* <ColorButton2 className = {classes.facebook} variant = "contained" startIcon={<FacebookIcon fontSize = "small" style={{color: "#ffffff", }}/>}>
-            透過Facebook登入
-          </ColorButton2> */}
-          
+            />          
           <ColorButton3 variant = "contained" onClick = {signInWithApple} startIcon={<AppleIcon style={{color: "#ffffff"}}/>}>
             透過Apple ID登入
           </ColorButton3>
@@ -328,9 +339,7 @@ export default function ImgMediaCard() {
           <Button variant = "outlined" component={RouterLink} to="/home" style={{color: "#00d04c", fontWeight:"700" , borderColor: "#00d04c", width:"182px", height: "40px", margin: "auto",marginTop: '16px' }}>
             直接使用
           </Button>
+          
       </div>
   );
 }
-
-// href="https://gohiking-server.herokuapp.com/auth/google/" target="_blank"
-// 1311202525878900

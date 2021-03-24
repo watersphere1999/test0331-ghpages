@@ -40,7 +40,7 @@ function Navigation(props) {
      
       <BottomNavigationAction label="首頁" href="/home" icon={<HomeIcon />} />
       <BottomNavigationAction label="步道搜尋" href="/searchPage" icon={<SearchIcon />} />
-      <BottomNavigationAction label="附近步道"  icon={<LocationOnIcon />} />
+      <BottomNavigationAction label="附近步道"  icon={<LocationSearchingIcon />} />
       <BottomNavigationAction label="我的最愛"  icon={<FavoriteIcon  />} />
 
     </BottomNavigation>

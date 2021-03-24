@@ -26,7 +26,7 @@ const SearchPage = lazy(() => import('../pages/SearchPage/SearchPage'))
 const SearchQuick = lazy(() => import('../pages/SearchQuick/SearchQuick'))
 const SearchResult = lazy(() => import('../pages/SearchResult/SearchResult'))
 const CollectPage = lazy(() => import('../pages/CollectPage/CollectPage'))
-
+const CollectPage2 = lazy(() => import('../pages/CollectPage/CollectPage2'))
 
 const PrivacyPolicy = lazy(()=> import('../pages/PrivacyPolicy/PrivacyPolicy'))
 const AboutUs =lazy(()=>import('../pages/AboutUs/AboutUs'))
@@ -63,6 +63,7 @@ const routes = [
   <Route path="/Home" exact component={Home} />,
   <Route path="/about" exact component={About} />,
   <Route path="/collectPage" exact component={CollectPage} />,
+  <Route path="/collectPage2" exact component={CollectPage2} />,
   <Route path="/columnPage/:id" exact component={ColumnPage} />,
   <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
   <AuthorizedRoute path="/home" exact component={Home} />,

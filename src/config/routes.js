@@ -3,8 +3,7 @@ import React, { lazy } from 'react'
 import AuthorizedRoute from 'base-shell/lib/components/AuthorizedRoute/AuthorizedRoute'
 import UnauthorizedRoute from 'base-shell/lib/components/UnauthorizedRoute/UnauthorizedRoute'
 import { Route } from 'react-router-dom'
-import CropAvatar from 'pages/PersonalPage/CropAvatar'
-import EditAccount from 'pages/PersonalPage/EditAccount'
+
 
 // const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
 const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
@@ -26,8 +25,8 @@ const Collection = lazy(() => import('../pages/HikingFrontend/Collection'))
 const SearchPage = lazy(() => import('../pages/SearchPage/SearchPage'))
 const SearchQuick = lazy(() => import('../pages/SearchQuick/SearchQuick'))
 const SearchResult = lazy(() => import('../pages/SearchResult/SearchResult'))
+const CollectPage = lazy(() => import('../pages/CollectPage/CollectPage'))
 
-const PersonalPage = lazy(() => import('../pages/PersonalPage'))
 
 const PrivacyPolicy = lazy(()=> import('../pages/PrivacyPolicy/PrivacyPolicy'))
 const AboutUs =lazy(()=>import('../pages/AboutUs/AboutUs'))
@@ -63,6 +62,7 @@ const routes = [
   <Route path="/aboutUs" exact component={AboutUs} />,
   <Route path="/Home" exact component={Home} />,
   <Route path="/about" exact component={About} />,
+  <Route path="/collectPage" exact component={CollectPage} />,
   <Route path="/columnPage/:id" exact component={ColumnPage} />,
   <AuthorizedRoute path="/my_account" exact component={MyAccount} />,
   <AuthorizedRoute path="/home" exact component={Home} />,
@@ -73,9 +73,8 @@ const routes = [
   <AuthorizedRoute path="/filter_demo" exact component={FilterDemo} />,
   <AuthorizedRoute path="/list_page_demo" exact component={ListPageDemo} />,
   <AuthorizedRoute path="/tabs_demo" exact component={TabsDemo} />,
-  <UnauthorizedRoute path="/personalPage" exact component={PersonalPage} />,
-  <UnauthorizedRoute path="/editAccount" exact component={EditAccount} />,
-  <UnauthorizedRoute path="/cropAvatar" exact component={CropAvatar} />,
+
+
 
 ]
 

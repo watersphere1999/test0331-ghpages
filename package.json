@@ -36,6 +36,7 @@
     "react-intl": "^5.13.4",
     "react-ios-pwa-prompt": "1.x",
     "react-markdown": "5.x",
+    "react-rangeslider": "^2.2.0",
     "react-router-dom": "5.x",
     "react-virtualized-auto-sizer": "^1.0.5",
     "react-google-recaptcha": "^2.1.0",
@@ -45,6 +46,7 @@
     "react-scripts": "^4.0.2",
 
     "react-window": "1.x",
+    "slider": "^1.0.4",
     "swiper": "^6.5.0",
     "yup": "^0.32.9"
   },

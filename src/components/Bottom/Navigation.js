@@ -6,8 +6,8 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 
+import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 const useStyles = makeStyles((theme) => ({
   footer:{
     boxShadow:" 0 0 3px 0 rgba(0, 0, 0, 0.2)",
@@ -42,7 +42,7 @@ function Navigation(props) {
       <BottomNavigationAction label="步道搜尋" href="/searchPage" icon={<SearchIcon />} />
       <BottomNavigationAction label="附近步道"  icon={<LocationOnIcon />} />
       <BottomNavigationAction label="我的最愛"  icon={<FavoriteIcon  />} />
-    
+
     </BottomNavigation>
     </div>
   </Fragment>

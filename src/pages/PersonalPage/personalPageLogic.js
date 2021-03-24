@@ -1,9 +1,5 @@
-import axios from "axios";
-import React, { Fragment, useState, useEffect } from "react";
-
-const api = axios.create({
-  baseURL: "http://4b4619ff6741.ngrok.io"
-});
+import demoapi from "axios/api";
+import React, { useState, useEffect } from "react";
 
 const PersonalPageLogic = (info = null) => {
   const [isLoading, setisLoading] = useState(info ? false : true);
@@ -18,17 +14,20 @@ const PersonalPageLogic = (info = null) => {
     if (!info) getPersonalInfo(1);
   }, [info]);
   const getPersonalInfo = async id => {
-    console.log("getting");
-    await api.get("/api/user/" + id).then(res => {
+    await demoapi.get("/api/user/" + id).then(res => {
       setisLoading(false);
-      res.data.gender = res.data.gender ? "男" : "女";
+      res.data.users.gender = res.data.users.gender ? "男" : "女";
+      console.log(res.data.users.name);
       setpersonalInfo(res.data);
     });
   };
 
   const handleNameChange = event => {
     const value = event.target.value;
-    setpersonalInfo({ ...personalInfo, name: value });
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, name: value }
+    });
     if (value == "") {
       setnameValidation("姓名不可為空");
     } else {
@@ -38,7 +37,10 @@ const PersonalPageLogic = (info = null) => {
 
   const handleSexChange = event => {
     const value = event.target.value;
-    setpersonalInfo({ ...personalInfo, gender: value });
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, gender: value }
+    });
     if (value == "男" || value == "女") {
       setgenderValidation("");
     } else {
@@ -48,7 +50,10 @@ const PersonalPageLogic = (info = null) => {
 
   const handleTelChange = event => {
     const value = event.target.value;
-    setpersonalInfo({ ...personalInfo, phone_number: value });
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, phone_number: value }
+    });
     let reg = new RegExp(/^\d*$/).test(value);
     if (reg) {
       setphoneValidation("");
@@ -57,14 +62,21 @@ const PersonalPageLogic = (info = null) => {
     }
   };
   const handleBirthChange = event => {
-    setpersonalInfo({ ...personalInfo, birth: event.target.value });
+    const value = event.target.value;
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, birth: value }
+    });
   };
 
   const handleCountyChange = event => {
     const value = event.target.value;
     setpersonalInfo({
       ...personalInfo,
-      county: { ...personalInfo.county, name: value }
+      users: {
+        ...personalInfo.users,
+        county: { ...personalInfo.users.county, name: value }
+      }
     });
   };
   const getBase64 = file => {
@@ -78,41 +90,26 @@ const PersonalPageLogic = (info = null) => {
 
   const updateInfo = async (id, data) => {
     setisLoading(true);
-    console.log(data);
-    if (data.croppedImage) {
-      let blob = await fetch(data.croppedImage).then(r => r.blob());
-      const file = new File([blob], "1234567890.jpg", {
-        lastModified: new Date(),
-        type: "image/jpeg"
-      });
-      const b64 = await getBase64(file);
-      console.log(b64);
-      data.croppedImage = b64;
-      // console.log(file);
-      // var fd = new FormData();
-      // fd.append("image", file);
-      // axios
-      //   .post("https://api.imgur.com/3/image", fd, {
-      //     headers: {
-      //       Authorization: "Client-ID 6bdc55894336124"
-      //     }
-      //   })
-      //   .then(res => {
-      //     console.log(res);
-      //   });
-    }
-    return api
+    // if (data.croppedImage) {
+    //   let blob = await fetch(data.croppedImage).then(r => r.blob());
+    //   const file = new File([blob], "1234567890.jpg", {
+    //     lastModified: new Date(),
+    //     type: "image/jpeg"
+    //   });
+    //   const b64 = await getBase64(file);
+    //   data.croppedImage = b64;
+    // }
+    return demoapi
       .put("/api/user/" + id, {
         name: data.name,
         gender: data.gender,
         phone_number: data.phone_number,
         birth: data.birth,
-        // profile_photo_url: data.croppedImage ? data.croppedImage : data.image,
-        image: "https://i.imgur.com/X7whEnq.jpg",
-        county: data.county
+        image: data.croppedImage ? data.croppedImage : data.image,
+        county: data.county,
+        country_code_id: data.countryCode
       })
       .then(res => {
-        console.log(res);
         return res.status;
       });
   };

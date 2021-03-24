@@ -5,14 +5,13 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-
 import axios from "axios";
-import TrailList from "../../components/Lists/TrailList";
+import TrailList from "../../components/Lists/TrailCard";
 import BackArrow from "../../components/TopBar/BackArrow";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-
 import ShareIcon from "@material-ui/icons/Share";
+import demoapi from "../../axios/api"; //引入api
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -100,13 +99,6 @@ const useStyles = makeStyles((theme) => ({
 const api = axios.create({
   //heroku
   baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-  headers: {
-    "X-Secure-Code": "12345678",
-  },
-});
-const demoapi = axios.create({
-  //測試 api
-  baseURL: "http://09da54f0b81b.ngrok.io",
   headers: {
     "X-Secure-Code": "12345678",
   },

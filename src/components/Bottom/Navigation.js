@@ -6,8 +6,9 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 
+
+import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 const useStyles = makeStyles((theme) => ({
   footer:{
     boxShadow:" 0 0 3px 0 rgba(0, 0, 0, 0.2)",
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 function Navigation() {
   
   const classes = useStyles(); 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   return(
     

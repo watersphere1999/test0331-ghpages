@@ -5,8 +5,8 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import TitleBar from "../../components/TopBar/TitleBar";
 import CollectionList from '../../components/Lists/CollectionList';
 import Navigation from "../../components/Bottom/Navigation";
-import axios from "axios";
 import Container from '@material-ui/core/Container';
+import demoapi from "axios/api";
 
 const lightTheme = createMuiTheme({
     palette: {
@@ -37,20 +37,14 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         fontFamily: "NotoSansCJKtc",
     },
+    
 }));
-
-const api = axios.create({
-    baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-    headers: {
-        "X-Secure-Code": "12345678",
-    },
-});
 
 function SearchPage() {
     const classes = useStyles();
     const [searchResult, setSearchResult] = useState([]);
     const collectionData = async () => {
-        const Data = await api.get("api/collection");
+        const Data = await demoapi.get("api/collection");
         setSearchResult(Data.data);
     };
     useEffect(() => {

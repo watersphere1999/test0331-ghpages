@@ -5,15 +5,15 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import getty from "../../asset/img/gettyimages-1197938495-2048x2048.jpg";
-import getty2 from "../../asset/img/gettyimages-1181433728-2048x2048.jpg";
-import getty3 from "../../asset/img/gettyimages-760239297-2048x2048.jpg";
+
 import magetty from "../../asset/img/gettyimages-1197742259-2048x2048.jpg";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination } from "swiper";
 import { Grid } from "@material-ui/core";
 // Import Swiper styles
 import "swiper/swiper.scss";
+import "swiper/components/pagination/pagination.scss";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -32,7 +32,8 @@ import forest from "../../asset/img/icon-forest.png";
 import sakura from "../../asset/img/icon-sakura.png";
 import { Link } from "react-router-dom";
 import TemporaryDrawer from "../../components/SideBar/Sidebar-menu";
-
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import demoapi from "../../axios/api"; //引入api
 const lightTheme = createMuiTheme({
   palette: {
     type: "light",
@@ -63,47 +64,57 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   marquee: {
-    height: "100%",
-    width: "259px",
-    
-    backgroundColor: "#000000",
+    position: "relative",
+    top: "50%",
+    transform: "translateY(-50%)",
+    left: "5%",
+    color: "white",
   },
   matitle: {
-    letterSpacing:"0.46px",
-    margin: "0 69px 8px 0",
-    color: "#ffffff",
-    fontSize: "22px",
+    fontSize:"22px",
+    fontFamily: '"NotoSansCJKtc',
     fontWeight: "bold",
+    lineHeight: 1.5,
+    letterSpacing: 0.5,
+    textDecoration: "none",
+    padding: 8,
   },
   matext: {
-    color: "#ffffff",
-    fontSize: "16px",
+    fontFamily: '"NotoSansCJKtc',
+    fontWeight: "normal",
+    lineHeight: 1.5,
+    letterSpacing: 0.5,
+    textDecoration: "none",
+    padding: 8,
   },
   mabutton: {
+    fontFamily: '"NotoSansCJKtc',
+    fontWeight: "normal",
     backgroundColor: "#00d04c",
+    margin: 8,
+    borderRadius: "50px",
+    color: "white",
+
   },
   maimg: {
     height: "230px",
   },
   swiper: {
-
-    
     backgroundColor: "#fffff",
     height: "112px",
     textAlign: "center",
-    margin: "16px 0 0",
-
+    margin: "4% ",
   },
-  collection:{
-    margin: "0 0 7px",
-    padding:"16px",
-    textAlign:"center", 
+  collection: {
+    margin: "0 0 8px",
+    padding: "16px",
+    textAlign: "center",
   },
-  icontext:{
+  icontext: {
     margin: "7px 9px 0 10px",
-    textAlign:"center",
-    width:"29px",
-    fontWeight:"bold",
+    textAlign: "center",
+    width: "29px",
+    fontWeight: "bold",
   },
 
   iconImg: {
@@ -118,36 +129,46 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "22px",
     color: "#232323",
   },
-  
+
   linkstlye: {
     color: "#000",
     textDecoration: "none",
   },
-  text: {
-    maxWidth: "164px",
-    fontSize: "14px",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
+  swiperslide2: {
+    width: "174px",
+    height:"94px",
+    margin: 8,
   },
-
-  time: {
-    color: "#919191",
-    fontSize: "10px",
-    fontSize: "14px",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
+  text: {
     textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    fontSize: 14,
+    fontWeight: 500,
+    margin: "4px 0",
+  
+  },
+  time: {
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    margin: "1px 0",
+    fontSize: 10,
+    width:"40%",
+   
   },
   Img: {
+    width: "174px",
     height: "96px",
-    width:"174px",
+    borderRadius: 4,
+    height: "140",
   },
   tangle: {
-    width: "100%",
+    width: "100%",  
     height: "16px",
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
+
 }));
 const api = axios.create({
   baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
@@ -155,13 +176,7 @@ const api = axios.create({
     "X-Secure-Code": "12345678",
   },
 });
-const demoapi = axios.create({
-  //測試 api
-  baseURL: "http://09da54f0b81b.ngrok.io",
-  headers: {
-    "X-Secure-Code": "12345678",
-  },
-});
+
 const obj = {
   "mapple.png": mapple,
   "chellenge.png": chellenge,
@@ -170,11 +185,15 @@ const obj = {
   "forest.png": forest,
   "sakura.png": sakura,
 };
+//User SwiperCore 導航dot
+SwiperCore.use([Pagination]);
 export default function HomePage() {
   const classes = useStyles();
+  const [banners, setbanners] = useState([]);
   const [collection, setcollection] = useState([]);
   const [articles, setarticle] = useState([]);
-
+  banners.length=5;
+  articles.length=5;
   //搜尋主題api
   const collectionApi = async () => {
     await api.get("/api/collection").then((res) => {
@@ -186,11 +205,12 @@ export default function HomePage() {
   const articleApi = async () => {
     await demoapi.get("/api/home").then((res) => {
       setarticle(res.data.articles);
+      setbanners(res.data.banners);
     });
   };
+ 
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
-
   const toggleDrawer = (open) => (event) => {
     if (event.type === "keydown") return;
     setState(open);
@@ -206,6 +226,7 @@ export default function HomePage() {
     <>
       <div className={classes.root}>
         <ThemeProvider theme={lightTheme}>
+        
           <AppBar position="static" className={classes.appbar}>
             <Toolbar>
               <IconButton
@@ -228,7 +249,6 @@ export default function HomePage() {
                 Go Hiking
               </Typography>
               <Button color="inherit">
-                
                 <SearchIcon />
               </Button>
             </Toolbar>
@@ -236,26 +256,43 @@ export default function HomePage() {
 
           <Swiper
             className={classes.rectangle}
-            spaceBetween={100} //side 之間距離
-            slidesPerView={2} //容器能够同时显示的slides数量
+            spaceBetween={0} //side 之間距離
+
+
+            slidesPerView={1} //容器能够同 时显示的slides数量
             mousewheel={true}
-            onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
+            pagination={{ clickable: true }} //show dots
           >
-            <SwiperSlide>
-              <Grid className={classes.marquee}>
-                <Grid className={classes.matitle}>親子步道上線囉</Grid>
-                <br />
-                <Grid className={classes.matext}>帶你的老爸冒險去</Grid>
-                <br />
-                <Button variant="contained" className={classes.mabutton}>
-                  查看步道
-                </Button>
-              </Grid>
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={magetty} className={classes.maimg} />
-            </SwiperSlide>
+            {banners.map((banners) => (
+              <SwiperSlide
+                style={{
+                  backgroundColor: "#232323",
+                  backgroundImage: `url(${banners.image})`,
+                }}
+              >
+                <div className={classes.marquee}>
+                  {/* <img src={magetty} className={classes.maimg} /> */}
+                  <Typography className={classes.matitle}>
+                    {banners.title}
+                  </Typography>
+                  <Typography className={classes.matext}>
+                    {banners.content}
+                  </Typography>
+                  <Button
+                    href={banners.link}
+                    variant="contained"
+                    size="small"
+                    color="secondary"
+                    className={classes.mabutton}
+                    endIcon={<ArrowForwardIcon />}
+                  >
+                    查看步道
+                  </Button>
+                </div>
+              </SwiperSlide>
+            ))}
+
           </Swiper>
 
           <Grid className={classes.tangle} />
@@ -264,13 +301,14 @@ export default function HomePage() {
             className={classes.swiper}
             spaceBetween={25}
             slidesPerView={6}
+           
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
             showsButtons
             loop={false}
           >
             {collection.map((collection) => (
-              <SwiperSlide  className={classes.collection} >
+              <SwiperSlide className={classes.collection}>
                 <Link
                   to={`/searchQuick/${collection.id}`}
                   className={classes.linkstlye}
@@ -289,17 +327,28 @@ export default function HomePage() {
           <Grid className={classes.tangle} />
           <Grid className={classes.retitle}>行程推薦</Grid>
           <Swiper
-            className={classes.swiper2}
-            spaceBetween={16}
-            slidesPerView={10}
+            
+            spaceBetween={16} //side 之間距離
+            slidesPerView={5}
             navigation
-            pagination={{ clickable: true }}
+            breakpoints={{
+              // when window width is >= 640px
+              375: {
+                width: 375,
+                slidesPerView: 2,
+              },
+              // when window width is >= 768px
+              768: {
+                width: 768,
+                slidesPerView: 4,
+              },
+            }}
             scrollbar={{ draggable: true }}
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
           >
             {articles.map((articles) => (
-              <SwiperSlide>
+              <SwiperSlide className={classes.swiperslide2}>
                 <Link
                   to={`/columnPage/${articles.id}`}
                   className={classes.linkstlye}

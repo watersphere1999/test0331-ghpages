@@ -21,6 +21,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+// for GPS location
+import useGeolocation from "react-hook-geolocation";
+
 
 import { pathway, pathwayFamily, pathwayFavorite } from 'data/pathway';
 const useStyles = makeStyles((theme) => ({
@@ -95,6 +98,8 @@ const NearByPathway = () => {
     const [openDialog, setOpenDialog] = React.useState(true);
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const geolocation = useGeolocation();
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -105,6 +110,12 @@ const NearByPathway = () => {
     const handleCancel = () => {
         setOpenDialog(false);
     };
+
+    let lat = geolocation.latitude;
+    let lng = geolocation.longitude;
+    // let loc = lat.concat(',', lng);
+    console.log(lat, lng);
+
     return (
         <>
             <div className={classes.root}>

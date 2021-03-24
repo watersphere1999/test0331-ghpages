@@ -119,9 +119,9 @@ const SignUp = () => {
     await axios.post('https://gohiking-server.herokuapp.com/api/register', data)
     .then(function (response) {
       console.log('correct');
-      const { token } = response.data;
       responsedJSON = response.data
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('userId', response.data.userId)
       history.push("/register0_1");
     })
     .catch(function (error) {

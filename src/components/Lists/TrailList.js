@@ -4,38 +4,38 @@ import { Grid, Divider } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import { Checkbox } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%"
+    width: "100%",
   },
   gridCell: {
-    marginBottom: 14
+    marginBottom: 14,
   },
   title: {
     fontSize: 16,
-    fontWeight: 500
+    fontWeight: 500,
   },
   location: {
     fontSize: 14,
-    color: "#979797"
+    color: "#979797",
   },
   distance: {
     fontSize: 12,
-    color: "#979797"
+    color: "#979797",
   },
   divider: {
-    margin: theme.spacing(2, 0)
+    margin: theme.spacing(2, 0),
   },
   background: {
     height: "1px",
-    backgroundColor: "rgba(0, 0, 0, 0.12)"
+    backgroundColor: "rgba(0, 0, 0, 0.12)",
   },
   favorite: {
     color: "#FFF",
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: "translate(-50%, -50%)"
+    transform: "translate(-50%, -50%)",
   },
   mediaAvatar: {
     position: "relative",
@@ -47,24 +47,24 @@ const useStyles = makeStyles(theme => ({
       width: "100%",
       height: "72px",
       objectFit: "cover",
-      maxWidth: "300px"
-    }
-  }
+      maxWidth: "300px",
+    },
+  },
 }));
 
-const TrailList = props => {
+const TrailList = (props) => {
   const classes = useStyles();
   //api回傳資料
   const data = props.data;
   const [checked, setChecked] = useState(false);
-  const handleChange = id => {
+  const handleChange = (id) => {
     checked ? cancelFavorite(id) : makeItFavorite(id);
     setChecked(!checked);
   };
-  const makeItFavorite = trailID => {
+  const makeItFavorite = (trailID) => {
     console.log("make " + trailID + " trail favorite");
   };
-  const cancelFavorite = trailID => {
+  const cancelFavorite = (trailID) => {
     console.log("cancel " + trailID + " trail favorite");
   };
   return (
@@ -112,7 +112,7 @@ const TrailList = props => {
               <div style={{ marginTop: 2 }}>{data.title}</div>
             </Grid>
             <Grid item xs={12} className={classes.location}>
-              <div style={{ marginTop: 2 }}>{data.name}</div>
+              <div style={{ marginTop: 2 }}>{data.location.name}</div>
             </Grid>
             <Grid item xs={12} className={classes.distance}>
               <div style={{ marginTop: 2 }}>全程約{data.distance}公里</div>

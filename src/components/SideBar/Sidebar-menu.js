@@ -105,6 +105,11 @@ export default function Sidebar(props) {
   const [user, setuser] = useState([]);
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
+
+
+  sessionStorage.setItem('email','value');
+  const demoemail =sessionStorage.getItem('email');
+
   const id = "3";
   const userApi = async (id) => {
     await demoapi.get("/api/user/" + id).then((res) => {

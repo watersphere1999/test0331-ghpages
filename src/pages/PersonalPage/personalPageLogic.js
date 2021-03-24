@@ -1,9 +1,5 @@
-import axios from "axios";
-import React, { Fragment, useState, useEffect } from "react";
-
-const api = axios.create({
-  baseURL: "http://e372773410ac.ngrok.io"
-});
+import demoapi from "axios/api";
+import React, { useState, useEffect } from "react";
 
 const PersonalPageLogic = (info = null) => {
   const [isLoading, setisLoading] = useState(info ? false : true);
@@ -18,18 +14,20 @@ const PersonalPageLogic = (info = null) => {
     if (!info) getPersonalInfo(1);
   }, [info]);
   const getPersonalInfo = async id => {
-    console.log("getting");
-    await api.get("/api/user/" + id).then(res => {
+    await demoapi.get("/api/user/" + id).then(res => {
       setisLoading(false);
       res.data.users.gender = res.data.users.gender ? "男" : "女";
-      console.log(res.data.users.name)
+      console.log(res.data.users.name);
       setpersonalInfo(res.data);
     });
   };
 
   const handleNameChange = event => {
     const value = event.target.value;
-    setpersonalInfo({ ...personalInfo, name: value });
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, name: value }
+    });
     if (value == "") {
       setnameValidation("姓名不可為空");
     } else {
@@ -39,7 +37,10 @@ const PersonalPageLogic = (info = null) => {
 
   const handleSexChange = event => {
     const value = event.target.value;
-    setpersonalInfo({ ...personalInfo, gender: value });
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, gender: value }
+    });
     if (value == "男" || value == "女") {
       setgenderValidation("");
     } else {
@@ -49,7 +50,10 @@ const PersonalPageLogic = (info = null) => {
 
   const handleTelChange = event => {
     const value = event.target.value;
-    setpersonalInfo({ ...personalInfo, phone_number: value });
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, phone_number: value }
+    });
     let reg = new RegExp(/^\d*$/).test(value);
     if (reg) {
       setphoneValidation("");
@@ -58,14 +62,21 @@ const PersonalPageLogic = (info = null) => {
     }
   };
   const handleBirthChange = event => {
-    setpersonalInfo({ ...personalInfo, birth: event.target.value });
+    const value = event.target.value;
+    setpersonalInfo({
+      ...personalInfo,
+      users: { ...personalInfo.users, birth: value }
+    });
   };
 
   const handleCountyChange = event => {
     const value = event.target.value;
     setpersonalInfo({
       ...personalInfo,
-      county: { ...personalInfo.county, name: value }
+      users: {
+        ...personalInfo.users,
+        county: { ...personalInfo.users.county, name: value }
+      }
     });
   };
   const getBase64 = file => {
@@ -79,23 +90,24 @@ const PersonalPageLogic = (info = null) => {
 
   const updateInfo = async (id, data) => {
     setisLoading(true);
-    if (data.croppedImage) {
-      let blob = await fetch(data.croppedImage).then(r => r.blob());
-      const file = new File([blob], "1234567890.jpg", {
-        lastModified: new Date(),
-        type: "image/jpeg"
-      });
-      const b64 = await getBase64(file);
-      data.croppedImage = b64;
-    }
-    return api
+    // if (data.croppedImage) {
+    //   let blob = await fetch(data.croppedImage).then(r => r.blob());
+    //   const file = new File([blob], "1234567890.jpg", {
+    //     lastModified: new Date(),
+    //     type: "image/jpeg"
+    //   });
+    //   const b64 = await getBase64(file);
+    //   data.croppedImage = b64;
+    // }
+    return demoapi
       .put("/api/user/" + id, {
         name: data.name,
         gender: data.gender,
         phone_number: data.phone_number,
         birth: data.birth,
         image: data.croppedImage ? data.croppedImage : data.image,
-        county: data.county
+        county: data.county,
+        country_code_id: data.countryCode
       })
       .then(res => {
         return res.status;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
@@ -30,7 +30,12 @@ const useStyles = makeStyles(theme => ({
 }));
 const CropAvatar = props => {
   const history = useHistory();
-  const selectedImage = props.location.state.image;
+  const selectedImage = props.location.state
+    ? props.location.state.image
+    : null;
+  if (!selectedImage) {
+    history.goBack();
+  }
   const pData = props.location.state.pData;
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -69,7 +74,12 @@ const CropAvatar = props => {
             edge="start"
             color="inherit"
             aria-label="back"
-            onClick={() => history.goBack()}
+            onClick={() =>
+              history.push({
+                pathname: "/editAccount",
+                state: { pData: pData }
+              })
+            }
           >
             <ArrowBackIcon />
           </IconButton>

@@ -188,8 +188,8 @@ const useStyles = makeStyles((theme) => ({
           }
           onChange={handleChange}
           >   
-            <MenuItem value={'男'}>男</MenuItem>
-            <MenuItem value={'女'}>女</MenuItem>
+            <MenuItem value={1}>男</MenuItem>
+            <MenuItem value={0}>女</MenuItem>
           </Select>
           <Typography className={classes.Text} >
             手機

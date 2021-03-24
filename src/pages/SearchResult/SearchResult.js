@@ -7,13 +7,7 @@ import BackArrow from "../../components/TopBar/BackArrow";
 import TemporaryDrawer from "../../components/SideBar/Sidebar";
 import axios from "axios";
 import TrailCard from "../../components/Lists/TrailCard";
-
-const api = axios.create({
-  baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-  headers: {
-    "X-Secure-Code": "12345678"
-  }
-});
+import demoapi from "axios/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,13 +44,13 @@ function SearchResult(props) {
   }, [kw]);
   //搜尋function
   const searchApi = async kw => {
-    await api.get("/api/trail?filters=title:" + kw).then(res => {
+    await demoapi.get("/api/trail?filters=title:" + kw+"&uuid=1").then(res => {
       setSearchResult(res.data);
     });
   };
   //搜尋function2
   const searchApiSlideBar = async url => {
-    await api.get(url).then(res => {
+    await demoapi.get(url).then(res => {
       setSearchResult(res.data);
     });
   };

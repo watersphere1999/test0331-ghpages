@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Divider } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import { Checkbox } from "@material-ui/core";
+import demoapi from "axios/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,16 +57,12 @@ const TrailCard = props => {
   const classes = useStyles();
   //api回傳資料
   const data = props.data;
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(data.favorite);
   const handleChange = id => {
-    checked ? cancelFavorite(id) : makeItFavorite(id);
     setChecked(!checked);
-  };
-  const makeItFavorite = trailID => {
-    console.log("make " + trailID + " trail favorite");
-  };
-  const cancelFavorite = trailID => {
-    console.log("cancel " + trailID + " trail favorite");
+    demoapi.post("/api/favorite/?user_id=1&trail_id=" + id).then(res => {
+      console.log(res.status);
+    });
   };
   return (
     <div className={classes.root}>

@@ -177,6 +177,7 @@ export default function ImgMediaCard() {
       console.log('====second response==== ',response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
+      localStorage.setItem('userId',response2.data.userId);
       history.push('/home');
     })
     .catch(function (error) {
@@ -199,6 +200,7 @@ export default function ImgMediaCard() {
       console.log('====second response==== ', response2);
       console.log('====second response token==== ', response2.data.token);
       localStorage.setItem('token', response2.data.token);
+      localStorage.setItem('userId',response2.data.userId);
       history.push('/home');
     })
     .catch(function (error){
@@ -247,7 +249,7 @@ export default function ImgMediaCard() {
           data_apple = {
             'email':result.user.providerData[0].email,
             'name': name,
-            'apple_id': result.user.providerData[0].uid,
+            'apple_id': result.user.uid,
             'avatar': 'https://imgur.com/gallery/TX5W1uj',
             'token': result.credential.idToken,
           }
@@ -272,6 +274,7 @@ export default function ImgMediaCard() {
           console.log("====post success====",response3);
           console.log('====second response token====', response3.data.token);
           localStorage.setItem('token', response3.data.token);
+          localStorage.setItem('userId',response3.data.userId);
           history.push('/home');
         })
         .catch(function (error){

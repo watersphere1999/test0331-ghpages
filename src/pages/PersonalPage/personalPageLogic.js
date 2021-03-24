@@ -90,15 +90,15 @@ const PersonalPageLogic = (info = null) => {
 
   const updateInfo = async (id, data) => {
     setisLoading(true);
-    // if (data.croppedImage) {
-    //   let blob = await fetch(data.croppedImage).then(r => r.blob());
-    //   const file = new File([blob], "1234567890.jpg", {
-    //     lastModified: new Date(),
-    //     type: "image/jpeg"
-    //   });
-    //   const b64 = await getBase64(file);
-    //   data.croppedImage = b64;
-    // }
+    if (data.croppedImage) {
+      let blob = await fetch(data.croppedImage).then(r => r.blob());
+      const file = new File([blob], "1234567890.jpg", {
+        lastModified: new Date(),
+        type: "image/jpeg"
+      });
+      const b64 = await getBase64(file);
+      data.croppedImage = b64;
+    }
     return demoapi
       .put("/api/user/" + id, {
         name: data.name,

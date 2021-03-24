@@ -313,7 +313,7 @@ export default function HomePage() {
           </Swiper>
 
           <Grid className={classes.tangle} />
-          <Navigation />
+          <Navigation dfValue={0}/>
         </ThemeProvider>
       </div>
     </>

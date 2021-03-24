@@ -70,7 +70,7 @@ function SearchPage() {
                     <CollectionList data={searchResult}></CollectionList>
                 </Grid>
             </Container>
-            <Navigation />
+            <Navigation dfValue={1} />
             
             </ThemeProvider>
             </div>

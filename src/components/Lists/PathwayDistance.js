@@ -88,13 +88,10 @@ const useStyles = makeStyles(styles);
 export default function PathwayCard(props) {
     
     const {
-        pathLink,
         avatar,
-        avatarAlt,
         title,
         location,
         miles,
-        innerMedias,
         distance,
         favorite,
         ...rest
@@ -113,7 +110,7 @@ export default function PathwayCard(props) {
             >
                 <Grid item className={classes.gridItem} xs={4}>
                     <ButtonBase >
-                        <img className={classes.img} src={avatar} alt={avatarAlt} />
+                        <img className={classes.img} src={avatar}  />
                         <Checkbox
                             data-testid='checkFavorite'
                             checked={checked}
@@ -154,9 +151,7 @@ export default function PathwayCard(props) {
 PathwayCard.propTypes = {
     pathLink: PropTypes.string,
     avatar: PropTypes.string,
-    avatarAlt: PropTypes.string,
     title: PropTypes.node,
     location: PropTypes.node,
     miles: PropTypes.node,
-    innerMedias: PropTypes.arrayOf(PropTypes.object)
 };

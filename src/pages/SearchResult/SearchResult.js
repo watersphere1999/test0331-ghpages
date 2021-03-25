@@ -5,7 +5,6 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import { makeStyles } from "@material-ui/core/styles";
 import BackArrow from "../../components/TopBar/BackArrow";
 import TemporaryDrawer from "../../components/SideBar/Sidebar";
-import axios from "axios";
 import TrailCard from "../../components/Lists/TrailCard";
 import demoapi from "axios/api";
 

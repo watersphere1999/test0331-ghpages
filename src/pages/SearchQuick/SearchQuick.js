@@ -12,7 +12,7 @@ import chellenge from "../../asset/img/icon-chellenge.png";
 import hotSpring from "../../asset/img/icon-hot-spring.png";
 import forest from "../../asset/img/icon-forest.png";
 import sakura from "../../asset/img/icon-sakura.png";
-
+import demoapi from "axios/api";//引入api
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
@@ -91,7 +91,7 @@ function SearchQuick(props) {
   const [searchQuick, setSearchQuick] = useState([]);
 
   const searchApi = async (id) => {
-    await api.get("/api/collection/" + id).then((res) => {
+    await demoapi.get("/api/collection/" + id).then((res) => {
       setSearchQuick(res.data);
     });
   };

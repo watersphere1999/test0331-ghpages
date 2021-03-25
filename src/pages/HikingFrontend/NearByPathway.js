@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import axios from "axios";
 import {
     makeStyles,
@@ -21,11 +21,20 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+//Custom the Button theme
+import { ThemeProvider } from '@material-ui/styles'
+import { createMuiTheme } from "@material-ui/core/styles"
+import { blue } from '@material-ui/core/colors';
 // for GPS location
 import useGeolocation from "react-hook-geolocation";
 
-
 import { pathway, pathwayFamily, pathwayFavorite } from 'data/pathway';
+
+const theme = createMuiTheme({
+    palette: {
+        secondary: blue,
+    },
+});
 const useStyles = makeStyles((theme) => ({
     root: {
         fontFamily: "NotoSansCJKtc",
@@ -59,8 +68,19 @@ const useStyles = makeStyles((theme) => ({
         margin: '123px auto',
         textAlign: 'center',
         fontSize: 16,
+    },
+    DialogBtn: {
+        color: '#007aff',
+        fontSize: '14px'
     }
 }));
+
+const api = axios.create({
+    baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
+    headers: {
+        "X-Secure-Code": "12345678",
+    },
+});
 
 function a11yProps(index) {
     return {
@@ -71,6 +91,7 @@ function a11yProps(index) {
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
     const classes = useStyles();
+
     return (
         <div
             role="tabpanel"
@@ -93,11 +114,16 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired,
 };
 
-const NearByPathway = () => {
+function NearByPathway() {
     const [gpsSetting, setGpsSetting] = React.useState(false);
     const [openDialog, setOpenDialog] = React.useState(true);
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [searchMaple, setSearchMaple] = useState([]);
+    const [searchChallenge, setSearchChallenge] = useState([]);
+    const [searchSpring, setSearchSpring] = useState([]);
+    const [searchFamily, setSearchFamily] = useState([]);
+
     const geolocation = useGeolocation();
 
     const handleChange = (event, newValue) => {
@@ -115,6 +141,44 @@ const NearByPathway = () => {
     let lng = geolocation.longitude;
     // let loc = lat.concat(',', lng);
     console.log(lat, lng);
+    //call trails and set trails data in search and id is category
+    const initial = async () => {
+        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/1')
+            .then((response) => {
+                console.log(response.data.trails);
+                setSearchMaple(response.data.trails);
+            });
+        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/11')
+            .then((response) => {
+                console.log(response.data.trails);
+                setSearchChallenge(response.data.trails);
+            });
+        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/21')
+            .then((response) => {
+                console.log(response.data.trails);
+                setSearchSpring(response.data.trails);
+            });
+        await axios.get('https://go-hiking-backend-laravel.herokuapp.com/api/collection/31')
+            .then((response) => {
+                console.log(response.data.trails);
+                setSearchFamily(response.data.trails);
+            });
+        console.log('======success========', searchChallenge);
+    }
+
+    const firstUpdate = useRef(true);
+    useLayoutEffect(() => {
+        if (!firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+        console.log('prepare to initial!');
+        initial();
+    }, []);
+
+    useEffect(() => {
+        console.log('searchChallenge:    ', searchMaple)
+    }, [searchFamily])
 
     return (
         <>
@@ -139,49 +203,48 @@ const NearByPathway = () => {
                 {gpsSetting ?
                     <>
                         <TabPanel value={value} index={0}>
-                            {pathway.suggest.map((path, i) => (
+                            {searchMaple.map((path, i) => (
                                 <PathwayDistance
-                                    pathLink={path.pathLink}
                                     favorite={false}
-                                    key={i}
-                                    avatar={path.img}
-                                    avatarAlt={path.pathTitle}
-                                    title={path.pathTitle}
-                                    location={path.pathLocation}
-                                    miles={path.pathMiles}
+                                    avatar={path.coverImage}
+                                    title={path.title}
+                                    location={path.location}
+                                    miles={path.distance}
                                 />
                             ))}
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            {pathwayFamily.suggest.map((path, i) => (
+                            {searchChallenge.map((path, i) => (
                                 <PathwayDistance
-                                    pathLink={path.pathLink}
                                     favorite={false}
-                                    key={i}
-                                    avatar={path.img}
-                                    avatarAlt={path.pathTitle}
-                                    title={path.pathTitle}
-                                    location={path.pathLocation}
-                                    miles={path.pathMiles}
+                                    avatar={path.coverImage}
+                                    title={path.title}
+                                    location={path.location}
+                                    miles={path.distance}
                                 />
                             ))}
                         </TabPanel>
                         <TabPanel value={value} index={2}>
-                            {pathwayFavorite.suggest.map((path, i) => (
+                            {searchSpring.map((path, i) => (
                                 <PathwayDistance
-                                    pathLink={path.pathLink}
                                     favorite={false}
-                                    key={i}
-                                    avatar={path.img}
-                                    avatarAlt={path.pathTitle}
-                                    title={path.pathTitle}
-                                    location={path.pathLocation}
-                                    miles={path.pathMiles}
+                                    avatar={path.coverImage}
+                                    title={path.title}
+                                    location={path.location}
+                                    miles={path.distance}
                                 />
                             ))}
                         </TabPanel>
                         <TabPanel value={value} index={3}>
-                            Page Four for Testing
+                            {searchFamily.map((path, i) => (
+                                <PathwayDistance
+                                    favorite={false}
+                                    avatar={path.coverImage}
+                                    title={path.title}
+                                    location={path.location}
+                                    miles={path.distance}
+                                />
+                            ))}
                         </TabPanel>
                     </>
                     :
@@ -203,12 +266,14 @@ const NearByPathway = () => {
                         <DialogContentText id="alert-dialog-description">請至『設定』並開啟位置設定。</DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCancel}>
-                            取消
+                        <ThemeProvider theme={theme}>
+                            <Button color="secondary" onClick={handleCancel}>
+                                取消
                         </Button>
-                        <Button onClick={handleSetting} autoFocus>
-                            設定
+                            <Button color="secondary" onClick={handleSetting}>
+                                設定
                         </Button>
+                        </ThemeProvider>
                     </DialogActions>
                 </Dialog>
             </div>

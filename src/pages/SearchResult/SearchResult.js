@@ -52,8 +52,8 @@ function SearchResult(props) {
   //搜尋function
   const searchApi = async kw => {
     setisLoading(true);
-    var uid = localStorage.getItem("userid")
-      ? localStorage.getItem("userid")
+    var uid = localStorage.getItem("userId")
+      ? localStorage.getItem("userId")
       : 1;
     await demoapi
       .get("/api/trail?filters=title:" + kw + "&uuid=" + uid.toString())
@@ -69,8 +69,8 @@ function SearchResult(props) {
   //搜尋function2
   const searchApiSlideBar = async url => {
     setisLoading(true);
-    var uid = localStorage.getItem("userid")
-      ? localStorage.getItem("userid")
+    var uid = localStorage.getItem("userId")
+      ? localStorage.getItem("userId")
       : 1;
     await demoapi.get(url + "&uuid=" + uid).then(res => {
       setisLoading(false);

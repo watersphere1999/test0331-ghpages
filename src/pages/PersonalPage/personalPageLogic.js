@@ -11,10 +11,13 @@ const PersonalPageLogic = (info = null) => {
   const [countyValidation, setcountyValidation] = useState("");
 
   useEffect(() => {
-    if (!info) getPersonalInfo(1);
+    if (!info) getPersonalInfo();
   }, [info]);
-  const getPersonalInfo = async id => {
-    await demoapi.get("/api/user/" + id).then(res => {
+  const getPersonalInfo = async () => {
+    const uid = localStorage.getItem("userId")
+      ? localStorage.getItem("userId")
+      : 1;
+    await demoapi.get("/api/user/" + uid).then(res => {
       setisLoading(false);
       res.data.users.gender = res.data.users.gender ? "男" : "女";
       console.log(res.data.users.name);
@@ -88,8 +91,11 @@ const PersonalPageLogic = (info = null) => {
     });
   };
 
-  const updateInfo = async (id, data) => {
+  const updateInfo = async data => {
     setisLoading(true);
+    const uid = localStorage.getItem("userId")
+      ? localStorage.getItem("userId")
+      : 1;
     if (data.croppedImage) {
       let blob = await fetch(data.croppedImage).then(r => r.blob());
       const file = new File([blob], "1234567890.jpg", {
@@ -100,7 +106,7 @@ const PersonalPageLogic = (info = null) => {
       data.croppedImage = b64;
     }
     return demoapi
-      .put("/api/user/" + id, {
+      .put("/api/user/" + uid, {
         name: data.name,
         gender: data.gender,
         phone_number: data.phone_number,

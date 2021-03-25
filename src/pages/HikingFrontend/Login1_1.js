@@ -130,9 +130,10 @@ export default function SignIn() {
     await axios.post('https://gohiking-server.herokuapp.com/api/login', data)
     .then(function (response) {
       console.log('correct');
-      const { token } = response.data;
+      const { token,userId } = response.data;
       responsedJSON = response.data
       localStorage.setItem('token', token)
+      localStorage.setItem('userId', userId)
       GoHome()
     })
     .catch(function (error) {

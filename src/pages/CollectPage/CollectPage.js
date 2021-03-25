@@ -1,11 +1,25 @@
-import React, { Fragment } from "react";
-import heart from "../../asset/img/icon-heart-broken@3x.png";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-
-import { Grid, Box, createMuiTheme } from "@material-ui/core";
+import React, { useState, useEffect, Fragment } from "react";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
+import TrailCard from "../../components/Lists/TrailCard";
+import { Grid, GridList } from "@material-ui/core";
 import TitleBar from "../../components/TopBar/TitleBar";
 import Navigation from "../../components/Bottom/Navigation";
+import Button from "@material-ui/core/Button";
+import heart from "../../asset/img/icon-heart-broken@3x.png";
+import demoapi from "axios/api"; //引入api
+const lightTheme = createMuiTheme({
+  palette: {
+    type: "light",
+    primary: {
+      main: "#00d04c",
+    },
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
   root: {
     fontFamily: "NotoSansCJKtc",
@@ -22,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   button: {
-    width: '-webkit-fill-available',
-    height: '48px',
-    fontSize: '16px',
-    margin: '29px 0 0',
-    backgroundColor: '#00d04c',
-    color: '#ffffff',
-    borderRadius: 4
+    backgroundColor: "#00d04c",
+    width: "100%",
+
+    fontSize: "16px",
+    textAlign: "center",
+    height: "48px;",
+    color: "white",
   },
   iconImg: {
     heigh: "112",
@@ -41,43 +55,80 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
   },
-}));
-
-const lightTheme = createMuiTheme({
-  palette: {
-    type: "light",
-    primary: {
-      main: "#00d04c",
-    },
+  list: {
+    width: "100%",
+    padding: "5%",
   },
-});
+}));
 
 export default function CollectPage() {
   const classes = useStyles();
-
-  return (
+  const [searchResult, setSearchResult] = useState([]);
+  const kw = "步道";
+  const id = localStorage.getItem('userId'); 
+  useEffect(() => {
+    searchApi(kw);
+    return () => {
+      kw = "";
+    };
+    //載入完就清空kw，使重新載入頁面時會再發送一次apia請求
+  }, [kw]);
+  const searchApi = async () => {
+    await demoapi
+      .get("/api/trail?filters=title:" + kw + "&uuid=1")
+      .then((res) => {
+        setSearchResult(res.data);
+      });
+  };
+  if(id !=null ) {return (
     <>
       <div className={classes.root}>
         <ThemeProvider theme={lightTheme}>
           <TitleBar title="我的收藏" />
+          <Grid item xs={12} container direction="row">
+            {/* 步道list component */}
 
-          <Grid>
-            <div className={classes.img}>
-              <img src={heart} className={classes.iconImg} />
-            </div>
-            <div className={classes.text}>必須先登入可以收藏並查看喜愛步道</div>
-
-            <Button
-              variant="contained"
-              href="#contained-buttons"
-              className={classes.button}
-            >
-              登入
-            </Button>
-            <Navigation />
+            <GridList cellHeight={72} cols={1} className={classes.list}>
+              {searchResult.map((trail) => {
+                if (trail.favorite) {
+                  return <TrailCard data={trail} />;
+                } else {
+                  return "";
+                }
+              })}
+            </GridList>
           </Grid>
+
+          <Navigation dfValue={3} />
         </ThemeProvider>
       </div>
     </>
-  );
+  );}else{
+    return (
+      <>
+        <div className={classes.root}>
+          <ThemeProvider theme={lightTheme}>
+            <TitleBar title="我的收藏" />
+  
+            <Grid>
+              <div className={classes.img}>
+                <img src={heart} className={classes.iconImg} />
+              </div>
+              <div className={classes.text}>必須先登入可以收藏並查看喜愛步道</div>
+  
+              <Button
+                variant="contained"
+                component="a"
+                href="/signin"
+                className={classes.button}
+              >
+                登入
+              </Button>
+              <Navigation />
+            </Grid>
+          </ThemeProvider>
+        </div>
+      </>
+    );
+  }
 }

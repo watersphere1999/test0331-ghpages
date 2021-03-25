@@ -65,7 +65,14 @@ export default function CollectPage() {
   const classes = useStyles();
   const [searchResult, setSearchResult] = useState([]);
   const kw = "步道";
-  const id = localStorage.getItem('userId'); 
+  var id =0;
+  if(localStorage.getItem('userId')){
+     id= localStorage.getItem('userId'); //取得localstorage ussrId
+   }else{
+     id = 1;  //取不到user Id
+   }
+   
+
   useEffect(() => {
     searchApi(kw);
     return () => {

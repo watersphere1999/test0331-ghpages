@@ -9,10 +9,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import "./sidebar.scoped.scss";
 import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
-import PersonIcon from '@material-ui/icons/Person';
-import LockIcon from '@material-ui/icons/Lock';
-import InfoIcon from '@material-ui/icons/Info';
-import demoapi from "../../axios/api"; //引入api 
+import PersonIcon from "@material-ui/icons/Person";
+import LockIcon from "@material-ui/icons/Lock";
+import InfoIcon from "@material-ui/icons/Info";
+import demoapi from "../../axios/api"; //引入api
 
 const useStyles = makeStyles({
   list: {
@@ -56,20 +56,15 @@ const useStyles = makeStyles({
     "&:hover": {
       backgroundColor: "rgba(0, 208, 76, 0.05)",
       color: "#00d04c",
-  
     },
-    "&:hover ListItemIcon":{
+    "&:hover ListItemIcon": {
       color: "#00d04c",
-  
     },
   },
 
   icon: {
     color: "black",
-
     fontSize: "24px",
-    
-    
   },
   text: {
     margin: "0 0 0 32px",
@@ -105,18 +100,15 @@ export default function Sidebar(props) {
   const [user, setuser] = useState([]);
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
+  console.log(localStorage.getItem("userId"));
 
-
-  sessionStorage.setItem('email','value');
-  const demoemail =sessionStorage.getItem('email');
-
-  const id = "3";
+  // const id = localStorage.getItem("userId"); //取得使用者ID
+  const id ='1';
   const userApi = async (id) => {
     await demoapi.get("/api/user/" + id).then((res) => {
       setuser(res.data.users);
     });
   };
-
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === "keydown") return;
@@ -125,38 +117,51 @@ export default function Sidebar(props) {
   useEffect(() => {
     userApi(id);
   }, [id]);
-  console.log(user);
+
   return (
     <>
       <div className={classes.list} role="presentation">
-        <Avatar className={classes.avater} src={user.image} />
-        <Grid className={classes.name}>{user.name}</Grid>
+        {id != null && <Avatar className={classes.avater} src={user.image} />}
+        {id != null && <Grid className={classes.name}>{user.name}</Grid>}
+        {id != null && <Grid className={classes.mail}>{user.email}</Grid>}
+        {id == null && <Avatar className={classes.avater} />}
+        {id == null && <Grid className={classes.name}>訪客</Grid>}
 
-        <Grid className={classes.mail}>{user.email}</Grid>
         <hr />
+
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem button className={classes.scrim}>
-            <ListItemIcon >
-              <PersonIcon  className={classes.icon} />
+          {id != null && (
+            <ListItem button className={classes.scrim}>
+              <ListItemIcon>
+                <PersonIcon className={classes.icon} />
+              </ListItemIcon>
+
+              <ListItemText primary="個人檔案" />
+            </ListItem>
+          )}
+          <ListItem
+            button
+            className={classes.scrim}
+            component="a"
+            href="/privacyPolicy"
+          >
+            <ListItemIcon>
+              <LockIcon className={classes.icon} />
             </ListItemIcon>
-            
-            <ListItemText primary="個人檔案"  />
+
+            <ListItemText primary="隱私權政策" />
           </ListItem>
-          <ListItem button className={classes.scrim} component='a' href="/privacyPolicy">
-            <ListItemIcon  > 
-              <LockIcon  className={classes.icon}/>
+          <ListItem
+            button
+            className={classes.scrim}
+            component="a"
+            href="/aboutUs"
+          >
+            <ListItemIcon>
+              <InfoIcon className={classes.icon} />
             </ListItemIcon>
-           
-            <ListItemText  primary="隱私權政策" />
-         
-          </ListItem>
-          <ListItem button className={classes.scrim} component='a' href="/aboutUs">
-            <ListItemIcon >
-              <InfoIcon  className={classes.icon}/>
-            </ListItemIcon>
-       
+
             <ListItemText primary="關於我們" />
-        
           </ListItem>
         </List>
 
@@ -171,9 +176,17 @@ export default function Sidebar(props) {
         </List>
         <hr />
         <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem button>
-            <ListItemText primary="登出" className={classes.log} />
-          </ListItem>
+          {id == null && (
+            <ListItem button component="a" href="/signin">
+              <ListItemText primary="登入" className={classes.log} />
+            </ListItem>
+          )}
+
+          {id != null && (
+            <ListItem button component="a" href="/signin">
+              <ListItemText primary="登出" className={classes.log} />
+            </ListItem>
+          )}
         </List>
       </div>
     </>

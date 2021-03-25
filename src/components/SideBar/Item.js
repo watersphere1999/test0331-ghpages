@@ -17,12 +17,13 @@ export default function Item(props) {
     }
   }, [marks]);
 
-  const handleButtonClick = value => {
-    if (value === btnClick) {
+  const handleButtonClick = btn => {
+    if (btn.value === btnClick) {
       setBtnClick(() => "");
       props.getChild("");
     } else {
-      setBtnClick(value);
+      setBtnClick(btn.value);
+      props.getChild(btn.value);
     }
   };
 
@@ -47,8 +48,7 @@ export default function Item(props) {
                     }
                     disableElevation
                     onClick={async () => {
-                      handleButtonClick(btn.value);
-                      props.getChild(btn.value);
+                      handleButtonClick(btn);
                     }}
                     key={btn.value}
                   >

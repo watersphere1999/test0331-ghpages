@@ -67,8 +67,9 @@ const AvatarUploadDialog = props => {
   const [showAlert, setshowAlert] = useState(false);
 
   const handleInputChange = event => {
-    if (event.target.files[0].size > 1000000) {
-      setshowAlert(true)
+    if (!event.target.files[0]) return;
+    if (event.target.files[0].size > 1048576) {
+      setshowAlert(true);
     } else {
       setFile(URL.createObjectURL(event.target.files[0]));
     }

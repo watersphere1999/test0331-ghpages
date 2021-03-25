@@ -1,20 +1,9 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React from "react";
 import {
   makeStyles,
-  createMuiTheme,
-  ThemeProvider,
   withStyles
 } from "@material-ui/core/styles";
-import {
-  Avatar,
-  Backdrop,
-  Button,
-  Dialog,
-  Divider,
-  Grid,
-  InputLabel,
-  MenuItem
-} from "@material-ui/core";
+import { Avatar, Backdrop, CircularProgress, Divider, Grid } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -24,20 +13,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import AvatarUploadDialog from "components/Dialog/AvatarUploadDialog";
 import AvatarUploadDialogLogic from "components/Dialog/AvatarUploadDialogLogic";
-import Select from "@material-ui/core/Select";
-import { countryInfo } from "../../data/countryInfo";
 import PersonalPageLogic from "./personalPageLogic";
 import { useHistory } from "react-router";
-import ClipLoader from "react-spinners/ClipLoader";
-
-const lightTheme = createMuiTheme({
-  palette: {
-    type: "light",
-    primary: {
-      main: "#00d04c"
-    }
-  }
-});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -391,7 +368,9 @@ function PersonalPage(props) {
                   value:
                     Logix.personalInfo.users === undefined
                       ? ""
-                      : Logix.personalInfo.users.county.name
+                      : Logix.personalInfo.users.county
+                      ? Logix.personalInfo.users.county.name
+                      : ""
                 }}
               />
             </Grid>
@@ -405,7 +384,7 @@ function PersonalPage(props) {
         inputRef={inputRef}
       />
       <Backdrop className={classes.backdrop} open={Logix.isLoading}>
-        <ClipLoader color={"#36CAAD"} loading={Logix.isLoading} size={150} />
+        <CircularProgress />
       </Backdrop>
     </div>
   );

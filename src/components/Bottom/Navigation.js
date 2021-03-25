@@ -7,6 +7,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
+
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 const useStyles = makeStyles((theme) => ({
   footer:{
@@ -39,11 +40,10 @@ function Navigation(props) {
      >
      
       <BottomNavigationAction label="首頁" href="/home" icon={<HomeIcon />} />
-      <BottomNavigationAction label="步道搜尋" href="/searchPage" icon={<SearchIcon />} />
-      <BottomNavigationAction label="附近步道"  icon={<LocationSearchingIcon />} />
-      <BottomNavigationAction label="我的最愛" href="/collectPage" icon={<FavoriteIcon  />} />
-
-    </BottomNavigation>
+      <BottomNavigationAction label="步道搜尋" href="/searchResult" icon={<SearchIcon />} />
+      <BottomNavigationAction label="附近步道"  href="/nearbypathway"  icon={ <LocationSearchingIcon />} />
+      <BottomNavigationAction label="我的收藏" href="/CollectPage"  icon={<FavoriteIcon  />} />
+        </BottomNavigation>
     </div>
   </Fragment>
   );

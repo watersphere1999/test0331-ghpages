@@ -100,10 +100,14 @@ export default function Sidebar(props) {
   const [user, setuser] = useState([]);
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
-  console.log(localStorage.getItem("userId"));
+  var id = 0;
+  // var id =null;
+  if (localStorage.getItem("userId")) {
+    id = localStorage.getItem("userId"); //取得localstorage ussrId
+  } else {
+    id = 1; //取不到user Id
+  }
 
-  // const id = localStorage.getItem("userId"); //取得使用者ID
-  const id ='1';
   const userApi = async (id) => {
     await demoapi.get("/api/user/" + id).then((res) => {
       setuser(res.data.users);

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchPage() {
     const classes = useStyles();
-    const [searchResult, setSearchResult] = useState([]);
+    const [collection, setCollection] = useState([]);
     const collectionData = async () => {
         const Data = await demoapi.get("api/collection");
         setSearchResult(Data.data);

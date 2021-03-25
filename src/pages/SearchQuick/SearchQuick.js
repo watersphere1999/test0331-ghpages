@@ -4,7 +4,7 @@ import { Toolbar, Typography,IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, CardActionArea } from "@material-ui/core";
 import axios from "axios";
-import QuickList from "../../components/Lists/QuickList";
+import TrailCard from "../../components/Lists/TrailCard";
 import BackArrow from "../../components/TopBar/BackArrow";
 import family from "../../asset/img/icon-family.png";
 import mapple from "../../asset/img/icon-mapple.png";
@@ -67,12 +67,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const api = axios.create({
-  baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-  headers: {
-    "X-Secure-Code": "12345678",
-  },
-});
 
 const obj = {
   "mapple.png": mapple,
@@ -89,14 +83,21 @@ function SearchQuick(props) {
   const history = useHistory();
   //搜尋結果hook
   const [searchQuick, setSearchQuick] = useState([]);
-
+  const [trail, setTrail] = useState([]);
   const searchApi = async (id) => {
-    await demoapi.get("/api/collection/" + id).then((res) => {
+    await demoapi.get("/api/collection/" + id+"&uuid=1").then((res) => {
       setSearchQuick(res.data);
+    });
+  };
+  const trailApi = async (id) => {
+    await demoapi.get("/api/classification/" + id+"&uuid=1").then((res) => {
+      
+      setTrail(res.data.trails);
     });
   };
   useEffect(() => {
     searchApi(id);
+    trailApi(id);
   }, [id]);
 
   return (
@@ -142,7 +143,9 @@ function SearchQuick(props) {
 
         <Grid className={classes.list}>
           {/* 步道list component */}
-          <QuickList data={searchQuick.trails} />
+          {trail.map(trail => (
+              <TrailCard data={trail} />
+            ))}
         </Grid>
       </div>
     </>

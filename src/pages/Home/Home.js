@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
   matitle: {
-    fontSize:"22px",
+    fontSize: "22px",
     fontFamily: '"NotoSansCJKtc',
     fontWeight: "bold",
     lineHeight: 1.5,
@@ -85,7 +85,8 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 1.5,
     letterSpacing: 0.5,
     textDecoration: "none",
-    padding: 8,
+    padding: 6,
+    marginRight:3,
   },
   mabutton: {
     fontFamily: '"NotoSansCJKtc',
@@ -94,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
     margin: 8,
     borderRadius: "50px",
     color: "white",
-
   },
   maimg: {
     height: "230px",
@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   icontext: {
-    margin: "7px 9px 0 10px",
+    margin: "20%",
     textAlign: "center",
     width: "29px",
     fontWeight: "bold",
@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
   },
   swiperslide2: {
     width: "174px",
-    height:"94px",
+    height: "94px",
     margin: 8,
   },
   text: {
@@ -146,7 +146,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     fontWeight: 500,
     margin: "4px 0",
-  
   },
   time: {
     textOverflow: "ellipsis",
@@ -154,8 +153,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     margin: "1px 0",
     fontSize: 10,
-    width:"40%",
-   
+    width: "40%",
   },
   Img: {
     width: "174px",
@@ -164,18 +162,12 @@ const useStyles = makeStyles((theme) => ({
     height: "140",
   },
   tangle: {
-    width: "100%",  
+    width: "100%",
     height: "16px",
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
-
 }));
-const api = axios.create({
-  baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-  headers: {
-    "X-Secure-Code": "12345678",
-  },
-});
+
 
 const obj = {
   "mapple.png": mapple,
@@ -192,11 +184,11 @@ export default function HomePage() {
   const [banners, setbanners] = useState([]);
   const [collection, setcollection] = useState([]);
   const [articles, setarticle] = useState([]);
-  banners.length=5;
-  articles.length=5;
+  banners.length = 5;
+  articles.length = 5;
   //搜尋主題api
   const collectionApi = async () => {
-    await api.get("/api/collection").then((res) => {
+    await demoapi.get("/api/collection").then((res) => {
       setcollection(res.data);
     });
   };
@@ -208,7 +200,7 @@ export default function HomePage() {
       setbanners(res.data.banners);
     });
   };
- 
+
   const [state, setState] = useState(false);
   const [anchor] = useState("left");
   const toggleDrawer = (open) => (event) => {
@@ -226,7 +218,6 @@ export default function HomePage() {
     <>
       <div className={classes.root}>
         <ThemeProvider theme={lightTheme}>
-        
           <AppBar position="static" className={classes.appbar}>
             <Toolbar>
               <IconButton
@@ -257,8 +248,6 @@ export default function HomePage() {
           <Swiper
             className={classes.rectangle}
             spaceBetween={0} //side 之間距離
-
-
             slidesPerView={1} //容器能够同 时显示的slides数量
             mousewheel={true}
             onSwiper={(swiper) => console.log(swiper)}
@@ -292,7 +281,6 @@ export default function HomePage() {
                 </div>
               </SwiperSlide>
             ))}
-
           </Swiper>
 
           <Grid className={classes.tangle} />
@@ -301,7 +289,7 @@ export default function HomePage() {
             className={classes.swiper}
             spaceBetween={25}
             slidesPerView={6}
-           
+            breakpoints={{}}
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
             showsButtons
@@ -327,11 +315,18 @@ export default function HomePage() {
           <Grid className={classes.tangle} />
           <Grid className={classes.retitle}>行程推薦</Grid>
           <Swiper
-            
             spaceBetween={16} //side 之間距離
             slidesPerView={5}
             navigation
             breakpoints={{
+              100: {
+                width: 100,
+                slidesPerView: 1,
+              },
+              200: {
+                width: 200,
+                slidesPerView: 1,
+              },
               // when window width is >= 640px
               375: {
                 width: 375,
@@ -362,7 +357,7 @@ export default function HomePage() {
           </Swiper>
 
           <Grid className={classes.tangle} />
-          <Navigation dfValue={0}/>
+          <Navigation dfValue={0} />
         </ThemeProvider>
       </div>
     </>

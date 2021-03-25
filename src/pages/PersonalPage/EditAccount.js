@@ -133,11 +133,11 @@ function EditAccount(props) {
       phone_number: personalInfo.users.phone_number,
       birth: personalInfo.users.birth,
       croppedImage: croppedImage,
-      image: personalInfo.users.profile_photo_url,
+      image: personalInfo.users.image,
       county: personalInfo.users.county.name,
       countryCode: document.getElementById("country-code").value
     };
-    const apiResult = await updateInfo(1, data);
+    const apiResult = await updateInfo(data);
     if (apiResult == 200)
       history.push({
         pathname: "/personalPage"

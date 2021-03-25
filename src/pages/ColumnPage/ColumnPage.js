@@ -4,9 +4,9 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, GridList } from "@material-ui/core";
 import axios from "axios";
-import TrailList from "../../components/Lists/TrailCard";
+import TrailCard from "../../components/Lists/TrailCard";
 import BackArrow from "../../components/TopBar/BackArrow";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "0",
     left: "0",
-    color:"#fff",
+    margin:"5px",
+    color: "#fff",
     display: "block",
     width: "40px",
     height: "40px",
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     position: "absolute",
     top: "0",
+    margin:"5px",
     right: "20%",
     display: "block",
     color: "#ffffff",
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "0",
     right: "0",
+    margin:"5px",
     display: "block",
     color: "#ffffff",
   },
@@ -96,14 +99,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const api = axios.create({
-  //heroku
-  baseURL: "https://go-hiking-backend-laravel.herokuapp.com/",
-  headers: {
-    "X-Secure-Code": "12345678",
-  },
-});
-
 function Column(props) {
   const classes = useStyles();
   const [trail, setTrail] = useState([]);
@@ -114,7 +109,7 @@ function Column(props) {
 
   const articleApi = async (id) => {
     //搜尋文章頁面api
-    await demoapi.get("/api/article/" + id).then((res) => {
+    await demoapi.get("/api/article/" + id + "&uuid=1").then((res) => {
       setArticle(res.data);
       setTrail(res.data.trails);
     });
@@ -130,8 +125,8 @@ function Column(props) {
         <ThemeProvider>
           <img src={article.image} className={classes.Img} />
 
-          <Grid item xs={12} >
-            <Link to="/home" className={classes.backArrow} >
+          <Grid item xs={12}>
+            <Link to="/home" className={classes.backArrow}>
               <BackArrow />
             </Link>
           </Grid>
@@ -152,8 +147,11 @@ function Column(props) {
           <Grid item xs={12} container>
             <div className={classes.textlist}>步道推薦</div>
             <div className={classes.trailList}>
-              {/* 步道list component */}
-              <TrailList data={trail} />
+              <GridList cellHeight={72} cols={1}>
+                {trail.map((trail) => (
+                  <TrailCard data={trail} />
+                ))}
+              </GridList>
             </div>
           </Grid>
         </ThemeProvider>

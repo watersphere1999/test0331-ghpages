@@ -336,6 +336,13 @@ const basicStyle = {
   },
   inputBox:{
     padding:8,
-  }
+  },
+  hikingInfoLeft:{
+    margin: '16px 0 16px 16px',
+  },
+  hikingInfoRight:{
+    textAlign: 'right',
+    margin: '14px 16px 13px 0',
+  },
 };
 export default basicStyle;

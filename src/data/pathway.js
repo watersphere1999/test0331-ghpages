@@ -11,21 +11,27 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_b0e9902c4a7b6a7164ff32f0a80e9ce27e8ace627fb20ae7dfd7021891452a07.jpg',
       pathTitle: '玉山主峰步道',
       pathLocation: '高雄市桃源區,南投縣信義鄉',
-      pathMiles: 21.8
+      pathMiles: 21.8,
+      longitude:120.56,
+      latitude:23.28
     },
     {
       pathLink: '/pathway',
       img: 'https://cdntwrunning.biji.co/300_02d18e0dd865e50a4892cc490e213881.jpg',
       pathTitle: '玉山前五峰登山步道',
       pathLocation: '南投縣信義鄉,嘉義縣阿里山鄉,高雄市桃源區',
-      pathMiles: 35.8
+      pathMiles: 35.8,
+      longitude:122.56,
+      latitude:24.28
     },
     {
       pathLink: '/pathway',
       img: 'https://cdntwrunning.biji.co/300_a45454b7c2a7042b404b5f518a87922d.jpg',
       pathTitle: '玉山前峰登山山徑',
       pathLocation: '南投縣信義鄉,嘉義縣阿里山鄉',
-      pathMiles: 7
+      pathMiles: 7,
+      longitude:120.56,
+      latitude:23.28
     },
     {
       pathLink: '/pathway',
@@ -33,7 +39,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_f07ba26d97f5dbf47010fef624c7c3c2fde401b0fa53a72bbbc951cc1f024ec0.jpg',
       pathTitle: '鹿林山步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 5.5
+      pathMiles: 5.5,
+      longitude:120.44,
+      latitude:22.28
     },
     {
       pathLink: '/pathway',
@@ -41,7 +49,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_1193d0c9b815a897bc1182131e0b1487bf8264af5d0079a1ba0f7d6be3d217e5.jpg',
       pathTitle: '麟趾山步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 6.7
+      pathMiles: 6.7,
+      longitude:120.92,
+      latitude:25.00
     },
     {
       pathLink: '/pathway',
@@ -49,7 +59,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_01a9d668856ec1623987aeea37db76ae4f4813054d7c46c54fc5c5c52740e57d.jpg',
       pathTitle: '瓦拉米步道',
       pathLocation: '花蓮縣卓溪鄉',
-      pathMiles: 28
+      pathMiles: 28,
+      longitude:121.45,
+      latitude:24.78
     },
     {
       pathLink: '/pathway',
@@ -57,7 +69,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_c046b2af40596282a2aa2bace205c58345a6e138e22a84d906dd21f96ca80607.jpg',
       pathTitle: '八通關雲龍瀑布步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 8
+      pathMiles: 8,
+      longitude:121.47,
+      latitude:23.55
     },
     {
       pathLink: '/pathway',
@@ -65,7 +79,9 @@ export const pathway = {
       img: 'https://cdntwrunning.biji.co/300_5a6eca81cb7b04692a0e49aae1b080434334c7cfeb9fc1dfa6b58b3ca418ebe4.jpg',
       pathTitle: '東埔山步道',
       pathLocation: '南投縣信義鄉',
-      pathMiles: 1.6
+      pathMiles: 1.6,
+      longitude:122.12,
+      latitude:24.77
     },
   ]
 };

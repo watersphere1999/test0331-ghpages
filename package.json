@@ -53,6 +53,7 @@
     "react-spinners": "^0.10.6",
     "react-virtualized-auto-sizer": "^1.0.5",
     "react-window": "1.x",
+    "react-zmage": "^0.8.5-beta.36",
     "slick-carousel": "^1.8.1",
     "slider": "^1.0.4",
     "swiper": "^6.5.0",

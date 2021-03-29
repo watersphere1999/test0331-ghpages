@@ -25,7 +25,8 @@ import "slick-carousel/slick/slick-theme.css";
 import AnnouncementCard from "../../components/AnnouncementCard/AnnouncementCard";
 import Charts from 'react-apexcharts';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-
+import Zmage from 'react-zmage'
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
 
     const style = {
         ...fontStyle,
@@ -52,11 +53,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
     };
 
 
-
     const Pathway = () =>{
         const classes = useStyles();
         const history = useHistory();        
         const [auth, setAuth] = React.useState(true);
+        const imagePath = pathwayInfo.map;
         // const [anchorEl, setAnchorEl] = React.useState(null);
         // const open = Boolean(anchorEl);
 
@@ -254,7 +255,71 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
                             />
                         ))}
                     </div>
-                    
+                    <Divider style={{height:'8px'}} />
+                    <div style={{padding: '16px 16px 0 16px'}}>
+                        <Typography style={{marginBottom: '16px', fontSize:'16px'}}>步道介紹</Typography>
+                        <Typography style={{marginBottom: '24px', fontSize:'14px'}}>{pathwayInfo.intro}</Typography>
+                        <a className={classes.buttonBase} onClick={() => Zmage.browsing({ src: imagePath})}>                
+                            {/* <img style={{position:'absolute', width:'100%', height:'224px', objectFit:'cover'}}alt={'map'} src={pathwayInfo.map}/>
+                            <div style={{position:'relative', width:'100%', height:'224px',backgroundColor: 'rgba(0,0,0,0.6)', top:'100px', left:'50px'}}></div> */}
+                            <img alt={'map'} src={pathwayInfo.map} className={classes.map} />
+                            <div className={classes.overlay} />
+                            <div className={classes.mapIcon}><ZoomInIcon fontSize="large" /></div>                            
+                        </a>
+                    </div>
+                    <Divider style={{height:'8px'}} />
+                    <div>
+                        <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>步道照片</Typography>
+                        <Slider {...pathwayCarousel}>
+                            {pathwayInfo.album.slice(0, 8).map((img, i) => (
+                                <div key={i}>
+                                <img src={img} alt={'slider img'} style={{width:'96px', height:'96px', objectFit:'cover', marginLeft:'16px', marginBottom:'16px'}} />
+                                </div>
+                            ))}
+                        </Slider>
+                    </div>
+                    <Divider style={{height:'8px'}} />
+                    <div>
+                        <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>鄰近景點</Typography>
+                        <Slider {...pathwayCarousel}>
+                        {pathwayInfo.attraction.map((item, i) => (
+                            <div key={i}>
+                                <Button variant={'contained'} style={{ backgroundColor: '#abddeb', minWidth:'83px', margin:'0 0 16px 16px' }}
+                                component={Link} to={'/attraction'}
+                                disableElevation>{item.category}</Button>
+                            </div>
+                        ))}
+
+                        </Slider>
+                    </div>
+                    <Divider style={{height:'8px'}} />
+                    <div>
+                        <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相關文章</Typography>
+                            <Slider {...pathwayCarousel}>
+                                {pathwayInfo.article.map((item, i) => (
+                                    <div key={i}>
+                                        <img src={item.img} style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                        <Typography style={{fontSize:'14px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.title}</Typography>
+                                        <Typography style={{fontSize:'10px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.date}</Typography>
+                                    </div>
+                                ))}
+                            </Slider>                       
+                    </div>
+                    <Divider style={{height:'8px'}} />
+                    {/* <div>
+                        <Typography style={{margin:'16px 0 16px 16px', fontSize:'16px', fontWeight: '700'}}>相似步道</Typography>
+                            <Slider {...pathwayCarousel}>
+                                {pathwayInfo.similar.map((item, i) => (
+                                    <div key={i}>
+                                        <img src={item.img} style={{width:'174px', height:'96px', objectFit:'cover', margin:'0 0 8px 16px'}}></img>
+                                        <Typography style={{fontSize:'16px', fontWeight:'900', marginBottom:'1px', marginLeft:'16px',}}>{item.pathTitle}</Typography>
+                                        <Typography style={{fontSize:'14px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.pathLocation}</Typography>
+                                        <Typography style={{fontSize:'12px', color:'979797', marginBottom:'16px',marginLeft:'16px',}}>{item.pathMiles}</Typography>
+                                    </div>
+                                ))}
+                            </Slider>                       
+                    </div> */}
+
                 </div>
             </ThemeProvider>
         )

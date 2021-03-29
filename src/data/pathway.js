@@ -520,6 +520,62 @@ export const pathwayInfo = {
       costTime: 385,
     },
   ],
+  article:[
+    {
+      title: '這是相關文章的標題A',
+      img: 'https://nyanphoto.com/wp-content/uploads/2018/09/%E5%A4%AA%E5%B9%B3%E5%B1%B1%E7%BF%A0%E5%B3%B0%E6%B9%96%E7%92%B0%E5%B1%B1%E6%AD%A5%E9%81%93-%E8%B5%B0%E5%9C%A8%E6%B3%A5%E6%BF%98.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題B',
+      img: 'https://1.blog.xuite.net/1/2/d/3/13757412/blog_2163183/txt/503594616/0.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題C',
+      img: 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1455678250067.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題D',
+      img: 'https://nyanphoto.com/wp-content/uploads/2018/09/%E5%A4%AA%E5%B9%B3%E5%B1%B1%E7%BF%A0%E5%B3%B0%E6%B9%96%E7%92%B0%E5%B1%B1%E6%AD%A5%E9%81%93-%E8%B5%B0%E5%9C%A8%E6%B3%A5%E6%BF%98.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題E',
+      img: 'https://1.blog.xuite.net/1/2/d/3/13757412/blog_2163183/txt/503594616/0.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題F',
+      img: 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1455678250067.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題G',
+      img: 'https://nyanphoto.com/wp-content/uploads/2018/09/%E5%A4%AA%E5%B9%B3%E5%B1%B1%E7%BF%A0%E5%B3%B0%E6%B9%96%E7%92%B0%E5%B1%B1%E6%AD%A5%E9%81%93-%E8%B5%B0%E5%9C%A8%E6%B3%A5%E6%BF%98.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題H',
+      img: 'https://1.blog.xuite.net/1/2/d/3/13757412/blog_2163183/txt/503594616/0.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+    {
+      title: '這是相關文章的標題I',
+      img: 'https://tps.forest.gov.tw/TPSWeb/wSite/public/Attachment/f1455678250067.jpg',
+      date: moment()
+        .format('YYYY-MM-DD'),
+    },
+  ],
   similar: [
     {
       pathLink: '/pathway',

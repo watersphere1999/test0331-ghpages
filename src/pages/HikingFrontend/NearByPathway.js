@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Navigation from "../../components/Bottom/Navigation";
-import PathwayDistance from "../../components/Lists/PathwayDistance";
+import PathwayDistance from "../../components/PathwayCard/PathwayDistance";
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { ReactComponent as Map } from '../../asset/img/map.svg';
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
     listItem: {
         height: "48px",
-        margin: "20px 0 0",
+        margin: "20px 20px 20px",
         fontSize: "20px"
     },
     title: {
@@ -102,7 +102,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box p={3}>
-                    <Typography className={classes.listItem}>{children}</Typography>
+                    <Typography component={'span'} className={classes.listItem}>{children}</Typography>
                 </Box>
             )}
         </div>
@@ -203,13 +203,18 @@ function NearByPathway() {
                 {gpsSetting ?
                     <>
                         <TabPanel value={value} index={0}>
-                            {searchMaple.map((path, i) => (
+                            {pathway.suggest.map((path, i) => (
                                 <PathwayDistance
                                     favorite={false}
-                                    avatar={path.coverImage}
-                                    title={path.title}
-                                    location={path.location}
-                                    miles={path.distance}
+                                    avatar={path.img}
+                                    title={path.pathTitle}
+                                    location={path.pathLocation}
+                                    miles={path.pathMiles}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -221,6 +226,11 @@ function NearByPathway() {
                                     title={path.title}
                                     location={path.location}
                                     miles={path.distance}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -232,6 +242,11 @@ function NearByPathway() {
                                     title={path.title}
                                     location={path.location}
                                     miles={path.distance}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>
@@ -243,6 +258,11 @@ function NearByPathway() {
                                     title={path.title}
                                     location={path.location}
                                     miles={path.distance}
+                                    yourlng={lng}
+                                    yourlat={lat}
+                                    longitude={path.longitude}
+                                    latitude={path.latitude}
+                                    key={i}
                                 />
                             ))}
                         </TabPanel>

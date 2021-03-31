@@ -274,7 +274,7 @@ function NearByPathway() {
                         </div>
                     </div>
                 }
-                <Navigation />
+                <Navigation dfValue={2}/>
                 <Dialog
                     fullWidth
                     open={openDialog}
